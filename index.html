@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>UMUM & APARATUR RSDS</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI}
+body{background:#f2f4f7;color:#222}
+.container{max-width:430px;margin:auto;padding:15px}
+
+.login-card{
+background:linear-gradient(135deg,#1e3c72,#2a5298);
+color:#fff;padding:35px;border-radius:22px;
+box-shadow:0 15px 40px rgba(0,0,0,.3);text-align:center
+}
+.login-card input{width:100%;padding:14px;border-radius:12px;border:none;margin:15px 0}
+.login-card button{width:100%;padding:14px;border:none;border-radius:12px;background:#00c6ff;color:#fff;font-weight:bold}
+
+.loading{display:none;margin-top:12px;font-size:13px;opacity:.9}
+
+.profile{
+background:#fff;border-radius:18px;padding:15px;margin-bottom:15px;
+box-shadow:0 8px 20px rgba(0,0,0,.08);cursor:pointer
+}
+.profile-detail{display:none;font-size:13px;margin-top:8px}
+
+.tabs{display:flex;gap:10px;margin-bottom:10px}
+.tab{flex:1;text-align:center;padding:10px;border-radius:12px;background:#e0e0e0}
+.tab.active{background:#1e88e5;color:#fff}
+
+.slider{display:flex;overflow-x:auto;scroll-snap-type:x mandatory}
+.slide{min-width:100%;scroll-snap-align:start}
+
+/* 🔒 KUNCI TAB LAYANAN SAJA */
+.slide:first-child{
+height:calc(100vh - 250px);
+overflow:hidden;
+}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+
+.menu{
+background:#fff;border-radius:18px;padding:22px;text-align:center;
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+cursor:pointer;transition:.15s
+}
+.menu:active{transform:scale(.96);box-shadow:0 4px 10px rgba(0,0,0,.15)}
+.menu span{font-size:36px;display:block;margin-bottom:10px}
+
+.card{
+background:#2f4858;color:#fff;border-radius:18px;
+padding:15px;margin-bottom:12px;font-size:13px
+}
+.folder-btn{
+display:inline-block;margin-top:6px;padding:6px 10px;
+background:#00c6ff;color:#fff;border-radius:8px;
+font-size:12px;text-decoration:none
+}
+
+.logout{
+margin-top:15px;width:100%;padding:14px;border:none;
+border-radius:14px;background:#ff4b5c;color:#fff;font-weight:bold
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<div id="loginBox" class="login-card">
+<h2>UMUM & APARATUR</h2>
+<p>RSUD dr. Soedarso</p>
+<input id="nip" placeholder="Masukkan NIP / NIK">
+<button id="btnLogin" onclick="login()">Masuk</button>
+<div class="loading" id="loading">Memverifikasi data…</div>
+</div>
+
+<div id="dashboard" style="display:none">
+
+<div class="profile" onclick="toggleProfile()">
+<h3 id="namaHeader"></h3>
+<div class="profile-detail" id="profileDetail"></div>
+</div>
+
+<div class="tabs">
+<div class="tab active" id="tabL">Layanan</div>
+<div class="tab" id="tabR">Riwayat Aktivitas</div>
+</div>
+
+<div class="slider" id="slider">
+
+<div class="slide">
+<div class="grid">
+
+<div class="menu" data-url="https://rikoantah.github.io/pangkat-rsds-aktive/"><span>👤</span>Pangkat</div>
+<div class="menu" data-url="https://rikoantah.github.io/Gaji-Berkala-RSDS-Soedarso/"><span>💰</span>Gaji Berkala</div>
+<div class="menu" data-url="https://rikoantah.github.io/Ukom-Rsds/"><span>📝</span>UKOM</div>
+<div class="menu" data-url="https://rikoantah.github.io/Jafung-D/"><span>💼</span>Jabatan Fungsional</div>
+<div class="menu" data-url="https://rikoantahsaputra94-jpg.github.io/Tampilan-Cuti-Umpar/"><span>📅</span>Cuti</div>
+<div class="menu" data-url="https://script.google.com/macros/s/AKfycbwAwouQ9BK6S9GzQeFtkUxKQJY_iunIfS35Jfe0wYD8L7A6-C5InI7IkFW4eSOnEKQz/exec"><span>🧮</span>Angka Kredit</div>
+<div class="menu" data-url="https://rikoantah.github.io/sip-sib/"><span>🪪</span>SIP / SIB</div>
+<div class="menu" data-url="https://rikoantah.github.io/slks-d/"><span>⭐</span>SLKS</div>
+
+</div>
+</div>
+
+<div class="slide">
+<div id="riwayatBox"></div>
+</div>
+
+</div>
+
+<button class="logout" onclick="logout()">Keluar</button>
+</div>
+</div>
+
+<script>
+const GAS_URL="https://script.google.com/macros/s/AKfycbyKN53MCOMPoD7ueyJAzpSfKRgM4yU72baZS4pmkSqrBrlgPWe9QAxbvP8quBAS5WmA/exec";
+
+/* ================= UX ADD : AUTO LOGIN ================= */
+
+window.onload=()=>{
+  const nip = localStorage.getItem("rsds_session");
+  if(nip){
+    document.getElementById("loginBox").style.display="block";
+    document.getElementById("loading").style.display="block";
+    document.getElementById("btnLogin").disabled=true;
+    fetchData(nip,true);
+  }
+};
+
+function login(){
+  const nip=document.getElementById("nip").value.trim();
+  if(!nip) return;
+  localStorage.setItem("rsds_session",nip);
+  document.getElementById("btnLogin").disabled=true;
+  document.getElementById("loading").style.display="block";
+  fetchData(nip,false);
+}
+
+function fetchData(nip,isAuto){
+  fetch(GAS_URL,{method:"POST",body:JSON.stringify({nip})})
+  .then(r=>r.json())
+  .then(r=>{
+    if(!r.status){
+      alert("Sesi tidak valid, silakan masuk kembali");
+      logout();
+      return;
+    }
+
+    document.getElementById("loginBox").style.display="none";
+    document.getElementById("dashboard").style.display="block";
+
+    showProfile(r.data.profile,isAuto);
+    showRiwayat(r.data.riwayat);
+  });
+}
+
+function showProfile(p,isAuto){
+  let greet = isAuto ? "Selamat datang kembali, " : "Hi, ";
+  document.getElementById("namaHeader").innerText = greet + p.nama;
+  document.getElementById("profileDetail").innerHTML = "NIP: " + p.nip;
+}
+
+function toggleProfile(){
+  const d=document.getElementById("profileDetail");
+  d.style.display=d.style.display==="block"?"none":"block";
+}
+
+function showRiwayat(data){
+  let h="";
+  if(!data.length){
+    h="<div style='text-align:center;color:#666;font-size:13px'>Belum ada aktivitas</div>";
+  }else{
+    data.forEach(x=>{
+      h+=`<div class="card"><b>${x.sheet.toUpperCase()}</b><br>${
+        Object.entries(x.detail).map(([k,v])=>{
+          if(k==="TIMESTAMP") return "";
+          if(String(v).startsWith("http"))
+            return `<a class="folder-btn" href="${v}" target="_blank">📂 Buka Folder</a>`;
+          return `<div>${k}: ${v}</div>`;
+        }).join("")
+      }</div>`;
+    });
+  }
+  document.getElementById("riwayatBox").innerHTML=h;
+}
+
+const slider=document.getElementById("slider");
+slider.addEventListener("scroll",()=>{
+  const i=Math.round(slider.scrollLeft/slider.offsetWidth);
+  tabL.classList.toggle("active",i===0);
+  tabR.classList.toggle("active",i===1);
+});
+tabL.onclick=()=>slider.scrollTo({left:0,behavior:"smooth"});
+tabR.onclick=()=>slider.scrollTo({left:slider.offsetWidth,behavior:"smooth"});
+
+function logout(){
+  localStorage.removeItem("rsds_session");
+  location.reload();
+}
+
+document.querySelectorAll(".menu").forEach(m=>{
+  m.addEventListener("click",()=>{
+    const url=m.dataset.url;
+    if(url) setTimeout(()=>window.open(url,"_blank"),120);
+  });
+});
+</script>
+
+</body>
+</html>
