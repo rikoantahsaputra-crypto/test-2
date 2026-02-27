@@ -10,44 +10,85 @@
 body{background:#f2f4f7;color:#222}
 .container{max-width:430px;margin:auto;padding:15px}
 
+/* LOGIN */
 .login-card{
 background:linear-gradient(135deg,#1e3c72,#2a5298);
 color:#fff;padding:35px;border-radius:22px;
 box-shadow:0 15px 40px rgba(0,0,0,.3);text-align:center
 }
-.login-card input{width:100%;padding:14px;border-radius:12px;border:none;margin:15px 0}
-.login-card button{width:100%;padding:14px;border:none;border-radius:12px;background:#00c6ff;color:#fff;font-weight:bold}
-
+.login-card input{width:100%;padding:14px;border-radius:12px;border:none;margin:15px 0;font-size:15px}
+.login-card button{width:100%;padding:14px;border:none;border-radius:12px;background:#00c6ff;color:#fff;font-weight:bold;font-size:15px}
 .loading{display:none;margin-top:12px;font-size:13px;opacity:.9}
 
+/* PROFILE */
 .profile{
 background:#fff;border-radius:18px;padding:15px;margin-bottom:15px;
 box-shadow:0 8px 20px rgba(0,0,0,.08);cursor:pointer
 }
-.profile-detail{display:none;font-size:13px;margin-top:8px}
+.profile-detail{display:none;font-size:13px;margin-top:8px;color:#555}
 
+/* ===== PESAN TERBARU ===== */
+.message-wrapper{
+margin-bottom:15px;
+}
+.message-header{
+background:#fff;
+border-radius:18px;
+padding:14px 16px;
+box-shadow:0 6px 15px rgba(0,0,0,.06);
+display:flex;
+justify-content:space-between;
+align-items:center;
+cursor:pointer;
+}
+.message-title{
+font-weight:600;
+font-size:14px;
+}
+.badge{
+background:#ff3b30;
+color:#fff;
+font-size:12px;
+padding:4px 8px;
+border-radius:20px;
+}
+.message-box{
+display:none;
+margin-top:8px;
+}
+.message-card{
+background:#fff8e1;
+border-left:4px solid #ff9800;
+border-radius:14px;
+padding:12px;
+margin-bottom:8px;
+font-size:13px;
+line-height:1.5;
+box-shadow:0 4px 10px rgba(0,0,0,.05);
+}
+.message-time{
+font-size:11px;
+color:#777;
+margin-top:4px;
+}
+
+/* TABS */
 .tabs{display:flex;gap:10px;margin-bottom:10px}
-.tab{flex:1;text-align:center;padding:10px;border-radius:12px;background:#e0e0e0}
+.tab{flex:1;text-align:center;padding:10px;border-radius:12px;background:#e0e0e0;font-size:14px}
 .tab.active{background:#1e88e5;color:#fff}
 
 .slider{display:flex;overflow-x:auto;scroll-snap-type:x mandatory}
 .slide{min-width:100%;scroll-snap-align:start}
-
-/* 🔒 KUNCI TAB LAYANAN SAJA */
-.slide:first-child{
-height:calc(100vh - 250px);
-overflow:hidden;
-}
+.slide:first-child{height:calc(100vh - 300px);overflow:hidden}
 
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
-
 .menu{
-background:#fff;border-radius:18px;padding:22px;text-align:center;
+background:#fff;border-radius:18px;padding:20px;text-align:center;
 box-shadow:0 8px 20px rgba(0,0,0,.08);
 cursor:pointer;transition:.15s
 }
-.menu:active{transform:scale(.96);box-shadow:0 4px 10px rgba(0,0,0,.15)}
-.menu span{font-size:36px;display:block;margin-bottom:10px}
+.menu:active{transform:scale(.96)}
+.menu span{font-size:30px;display:block;margin-bottom:8px}
 
 .card{
 background:#2f4858;color:#fff;border-radius:18px;
@@ -61,7 +102,7 @@ font-size:12px;text-decoration:none
 
 .logout{
 margin-top:15px;width:100%;padding:14px;border:none;
-border-radius:14px;background:#ff4b5c;color:#fff;font-weight:bold
+border-radius:14px;background:#ff4b5c;color:#fff;font-weight:bold;font-size:15px
 }
 </style>
 </head>
@@ -84,16 +125,17 @@ border-radius:14px;background:#ff4b5c;color:#fff;font-weight:bold
 <div class="profile-detail" id="profileDetail"></div>
 </div>
 
+<!-- PESAN TERBARU -->
+<div id="messageContainer"></div>
+
 <div class="tabs">
 <div class="tab active" id="tabL">Layanan</div>
 <div class="tab" id="tabR">Riwayat Aktivitas</div>
 </div>
 
 <div class="slider" id="slider">
-
 <div class="slide">
 <div class="grid">
-
 <div class="menu" data-url="https://rikoantah.github.io/pangkat-rsds-aktive/"><span>👤</span>Pangkat</div>
 <div class="menu" data-url="https://rikoantah.github.io/Gaji-Berkala-RSDS-Soedarso/"><span>💰</span>Gaji Berkala</div>
 <div class="menu" data-url="https://rikoantah.github.io/Ukom-Rsds/"><span>📝</span>UKOM</div>
@@ -102,14 +144,11 @@ border-radius:14px;background:#ff4b5c;color:#fff;font-weight:bold
 <div class="menu" data-url="https://script.google.com/macros/s/AKfycbwAwouQ9BK6S9GzQeFtkUxKQJY_iunIfS35Jfe0wYD8L7A6-C5InI7IkFW4eSOnEKQz/exec"><span>🧮</span>Angka Kredit</div>
 <div class="menu" data-url="https://rikoantah.github.io/sip-sib/"><span>🪪</span>SIP / SIB</div>
 <div class="menu" data-url="https://rikoantah.github.io/slks-d/"><span>⭐</span>SLKS</div>
-
 </div>
 </div>
-
 <div class="slide">
 <div id="riwayatBox"></div>
 </div>
-
 </div>
 
 <button class="logout" onclick="logout()">Keluar</button>
@@ -117,14 +156,11 @@ border-radius:14px;background:#ff4b5c;color:#fff;font-weight:bold
 </div>
 
 <script>
-const GAS_URL="https://script.google.com/macros/s/AKfycbyKN53MCOMPoD7ueyJAzpSfKRgM4yU72baZS4pmkSqrBrlgPWe9QAxbvP8quBAS5WmA/exec";
-
-/* ================= UX ADD : AUTO LOGIN ================= */
+const GAS_URL="YOUR_GAS_URL";
 
 window.onload=()=>{
   const nip = localStorage.getItem("rsds_session");
   if(nip){
-    document.getElementById("loginBox").style.display="block";
     document.getElementById("loading").style.display="block";
     document.getElementById("btnLogin").disabled=true;
     fetchData(nip,true);
@@ -144,18 +180,44 @@ function fetchData(nip,isAuto){
   fetch(GAS_URL,{method:"POST",body:JSON.stringify({nip})})
   .then(r=>r.json())
   .then(r=>{
-    if(!r.status){
-      alert("Sesi tidak valid, silakan masuk kembali");
-      logout();
-      return;
-    }
-
+    if(!r.status){ logout(); return; }
     document.getElementById("loginBox").style.display="none";
     document.getElementById("dashboard").style.display="block";
-
     showProfile(r.data.profile,isAuto);
+    showMessages(r.data.pesan); 
     showRiwayat(r.data.riwayat);
   });
+}
+
+function showMessages(messages){
+  if(!messages || !messages.length) return;
+
+  messages = messages.slice(0,5);
+
+  let html=`
+  <div class="message-wrapper">
+    <div class="message-header" onclick="toggleMessages()">
+      <div class="message-title">📩 Pesan Terbaru Untuk Anda</div>
+      <div class="badge">${messages.length}</div>
+    </div>
+    <div class="message-box" id="messageBox">`;
+
+  messages.forEach((m,i)=>{
+    html+=`
+      <div class="message-card">
+        ${m.text}
+        <div class="message-time">${m.time || ""}</div>
+      </div>`;
+  });
+
+  html+=`</div></div>`;
+
+  document.getElementById("messageContainer").innerHTML=html;
+}
+
+function toggleMessages(){
+  const box=document.getElementById("messageBox");
+  box.style.display = box.style.display==="block"?"none":"block";
 }
 
 function showProfile(p,isAuto){
@@ -188,26 +250,10 @@ function showRiwayat(data){
   document.getElementById("riwayatBox").innerHTML=h;
 }
 
-const slider=document.getElementById("slider");
-slider.addEventListener("scroll",()=>{
-  const i=Math.round(slider.scrollLeft/slider.offsetWidth);
-  tabL.classList.toggle("active",i===0);
-  tabR.classList.toggle("active",i===1);
-});
-tabL.onclick=()=>slider.scrollTo({left:0,behavior:"smooth"});
-tabR.onclick=()=>slider.scrollTo({left:slider.offsetWidth,behavior:"smooth"});
-
 function logout(){
   localStorage.removeItem("rsds_session");
   location.reload();
 }
-
-document.querySelectorAll(".menu").forEach(m=>{
-  m.addEventListener("click",()=>{
-    const url=m.dataset.url;
-    if(url) setTimeout(()=>window.open(url,"_blank"),120);
-  });
-});
 </script>
 
 </body>
