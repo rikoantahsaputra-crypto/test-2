@@ -8,7 +8,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI}
 body{background:#f4f6f9;color:#1f2937}
-.container{max-width:430px;margin:auto;padding:15px}
+.container{max-width:430px;margin:auto;padding:15px;position:relative}
 
 /* LOGIN */
 .login-card{
@@ -38,6 +38,40 @@ font-weight:700;
 font-size:16px;
 margin-top:4px;
 color:#374151
+}
+
+/* DROPDOWN LOGOUT */
+.top-menu{
+position:absolute;
+top:15px;
+right:15px;
+}
+.menu-btn{
+width:34px;height:34px;
+border-radius:50%;
+background:#fff;
+display:flex;align-items:center;justify-content:center;
+box-shadow:0 4px 10px rgba(0,0,0,.15);
+cursor:pointer;
+font-weight:bold;
+}
+.dropdown{
+display:none;
+position:absolute;
+right:0;
+margin-top:6px;
+background:#fff;
+border-radius:10px;
+box-shadow:0 6px 15px rgba(0,0,0,.15);
+overflow:hidden;
+}
+.dropdown div{
+padding:10px 14px;
+font-size:13px;
+cursor:pointer;
+}
+.dropdown div:hover{
+background:#f3f4f6;
 }
 
 /* MESSAGE */
@@ -72,7 +106,7 @@ font-size:13px
 flex:1;text-align:center;padding:10px;
 background:#e5e7eb;
 cursor:pointer;
-font-size:14px
+font-size:14px;
 }
 .tab.active{
 background:#1e3a8a;
@@ -151,6 +185,13 @@ text-decoration:none
 
 <div id="dashboard" style="display:none">
 
+<div class="top-menu">
+<div class="menu-btn" onclick="toggleDropdown()">⋮</div>
+<div class="dropdown" id="dropdown">
+<div onclick="logout()">Keluar Aplikasi</div>
+</div>
+</div>
+
 <div class="header">
 <div class="welcome">Welcome To Kepegawaian RSDS</div>
 <div class="nama-user" id="namaUser"></div>
@@ -220,20 +261,13 @@ let html=`<div class="message-header" onclick="toggleMsg()">
 </div>
 <div class="message-box" id="msgBox">`;
 
-globalData.pesan.forEach((m,i)=>{
+globalData.pesan.forEach(m=>{
 html+=`<div class="message-card">${m.text}
 <div style="font-size:11px;color:#6b7280">${m.time}</div></div>`;
 });
 
 html+="</div>";
 document.getElementById("messageContainer").innerHTML=html;
-
-// 🔥 buka otomatis dengan max 3 terlihat
-setTimeout(()=>{
-const box=document.getElementById("msgBox");
-box.style.display="block";
-box.scrollTop=0;
-},200);
 }
 
 function toggleMsg(){
@@ -263,7 +297,7 @@ document.getElementById("riwayatSlide").innerHTML=h;
 }
 
 function renderLayanan(){
-document.getElementById("layananSlide").innerHTML=`
+document.getElementById("layananSlide").innerHTML=document.getElementById("layananSlide").innerHTML || `
 <div class="grid">
 <div class="menu" onclick="openUrl('https://rikoantah.github.io/pangkat-rsds-aktive/')"><span>👤</span>Pangkat</div>
 <div class="menu" onclick="openUrl('https://rikoantah.github.io/Gaji-Berkala-RSDS-Soedarso/')"><span>💰</span>Gaji Berkala</div>
@@ -290,14 +324,20 @@ document.getElementById("profilSlide").innerHTML=h;
 }
 
 function goSlide(i){
-document.getElementById("slider")
-.scrollTo({left:i*window.innerWidth,behavior:"smooth"});
+const slider=document.getElementById("slider");
+slider.scrollTo({left:i*slider.clientWidth,behavior:"smooth"});
 document.querySelectorAll(".tab").forEach((t,idx)=>{
 t.classList.toggle("active",idx===i);
 });
 }
 
 function openUrl(url){window.open(url,"_blank");}
+
+function toggleDropdown(){
+const d=document.getElementById("dropdown");
+d.style.display=d.style.display==="block"?"none":"block";
+}
+
 function logout(){
 localStorage.removeItem("rsds_session");
 location.reload();
