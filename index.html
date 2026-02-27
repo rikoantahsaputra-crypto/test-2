@@ -31,7 +31,7 @@ color:#fff;font-weight:600
 /* HEADER */
 .header{text-align:center;margin-bottom:15px}
 .welcome{
-font-size:20px;
+font-size:22px;
 font-weight:700;
 }
 .nama-user{
@@ -39,29 +39,6 @@ font-size:16px;
 margin-top:4px;
 color:#374151
 }
-
-/* MENU DROPDOWN */
-.top-menu{position:absolute;right:20px;top:20px}
-.menu-btn{
-width:32px;height:32px;border-radius:50%;
-background:#fff;
-display:flex;align-items:center;justify-content:center;
-box-shadow:0 4px 10px rgba(0,0,0,.15);
-cursor:pointer
-}
-.dropdown{
-display:none;
-background:#fff;
-border-radius:10px;
-margin-top:5px;
-box-shadow:0 6px 15px rgba(0,0,0,.15)
-}
-.dropdown div{
-padding:10px 15px;
-cursor:pointer;
-font-size:13px
-}
-.dropdown div:hover{background:#f3f4f6}
 
 /* MESSAGE */
 .message-header{
@@ -79,7 +56,7 @@ display:none;
 background:#fff;
 border-radius:12px;
 padding:10px;
-max-height:180px;
+max-height:200px;
 overflow-y:auto;
 border:1px solid #e5e7eb
 }
@@ -174,15 +151,8 @@ text-decoration:none
 
 <div id="dashboard" style="display:none">
 
-<div class="top-menu">
-<div class="menu-btn" onclick="toggleDropdown()">⋮</div>
-<div class="dropdown" id="dropdown">
-<div onclick="logout()">Keluar</div>
-</div>
-</div>
-
 <div class="header">
-<div class="welcome">Welcome di Web Umpar RSDS</div>
+<div class="welcome">Welcome To Kepegawaian RSDS</div>
 <div class="nama-user" id="namaUser"></div>
 </div>
 
@@ -204,7 +174,7 @@ text-decoration:none
 </div>
 
 <script>
-const GAS_URL="https://script.google.com/macros/s/AKfycbzkG4C5MR4OaJ6HUtDJSUR4u5ubAoB3k0k5Vvlx6hpueuMtd-IRBIO0x3wyN5FU-vfq/exec";
+const GAS_URL="ISI_URL_GAS_KAMU";
 let globalData=null;
 
 window.onload=()=>{
@@ -243,17 +213,27 @@ renderProfil();
 
 function renderPesan(){
 if(!globalData.pesan.length) return;
+
 let html=`<div class="message-header" onclick="toggleMsg()">
-<div>Pesan Penting</div>
+<div>Pesan dari Bagian Kepegawaian</div>
 <div>${globalData.pesan.length}</div>
 </div>
 <div class="message-box" id="msgBox">`;
-globalData.pesan.forEach(m=>{
+
+globalData.pesan.forEach((m,i)=>{
 html+=`<div class="message-card">${m.text}
 <div style="font-size:11px;color:#6b7280">${m.time}</div></div>`;
 });
+
 html+="</div>";
 document.getElementById("messageContainer").innerHTML=html;
+
+// 🔥 buka otomatis dengan max 3 terlihat
+setTimeout(()=>{
+const box=document.getElementById("msgBox");
+box.style.display="block";
+box.scrollTop=0;
+},200);
 }
 
 function toggleMsg(){
@@ -318,10 +298,6 @@ t.classList.toggle("active",idx===i);
 }
 
 function openUrl(url){window.open(url,"_blank");}
-function toggleDropdown(){
-const d=document.getElementById("dropdown");
-d.style.display=d.style.display==="block"?"none":"block";
-}
 function logout(){
 localStorage.removeItem("rsds_session");
 location.reload();
