@@ -8,7 +8,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI}
 body{background:#f3f5f9;color:#222}
-.container{max-width:430px;margin:auto;padding:15px}
+.container{max-width:430px;margin:auto;padding:15px;position:relative}
 
 /* LOGIN */
 .login-card{
@@ -20,11 +20,38 @@ box-shadow:0 15px 40px rgba(0,0,0,.3);text-align:center
 .login-card button{width:100%;padding:14px;border:none;border-radius:12px;background:#00c6ff;color:#fff;font-weight:bold}
 .loading{display:none;margin-top:10px;font-size:13px}
 
-/* PROFILE HEADER */
-.profile-header{
-background:#fff;border-radius:18px;padding:15px;
-box-shadow:0 8px 20px rgba(0,0,0,.08);
-margin-bottom:12px;font-weight:600
+/* TOP MENU */
+.top-menu{
+position:absolute;top:15px;right:15px;
+}
+.menu-btn{
+background:#fff;border-radius:50%;
+width:36px;height:36px;
+display:flex;align-items:center;justify-content:center;
+box-shadow:0 4px 10px rgba(0,0,0,.15);
+cursor:pointer;font-weight:bold
+}
+.dropdown{
+display:none;
+position:absolute;right:0;margin-top:5px;
+background:#fff;border-radius:10px;
+box-shadow:0 6px 15px rgba(0,0,0,.15);
+overflow:hidden
+}
+.dropdown div{
+padding:10px 15px;font-size:13px;
+cursor:pointer
+}
+.dropdown div:hover{background:#f0f0f0}
+
+/* WELCOME */
+.welcome{
+margin-bottom:5px;
+font-size:14px;color:#555
+}
+.nama-user{
+font-size:18px;font-weight:600;
+margin-bottom:10px
 }
 
 /* MESSAGE */
@@ -39,7 +66,7 @@ display:none;
 background:#fff;
 border-radius:14px;
 padding:10px;
-max-height:220px;
+max-height:200px;
 overflow-y:auto;
 box-shadow:0 6px 15px rgba(0,0,0,.1)
 }
@@ -55,32 +82,29 @@ border-radius:10px;font-size:13px
 .tab{flex:1;text-align:center;padding:10px;border-radius:12px;background:#e0e0e0;cursor:pointer}
 .tab.active{background:#1e88e5;color:#fff}
 
-/* CARD */
+/* CARD STYLE */
 .card{
-background:linear-gradient(135deg,#667eea,#764ba2);
-color:#fff;border-radius:20px;
+border-radius:20px;
 padding:16px;margin-bottom:12px;
 box-shadow:0 10px 25px rgba(0,0,0,.15);
-font-size:13px
+font-size:13px;color:#fff
+}
+.card-riwayat{
+background:linear-gradient(135deg,#667eea,#764ba2);
+}
+.card-profil{
+background:linear-gradient(135deg,#00b09b,#96c93d);
 }
 
-/* PROFILE TAB */
-.profile-box{
-background:#fff;border-radius:18px;
-padding:15px;box-shadow:0 6px 15px rgba(0,0,0,.1);
-font-size:13px;line-height:1.6
+/* GRID LAYANAN */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.menu{
+background:#fff;border-radius:18px;padding:20px;text-align:center;
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+cursor:pointer;transition:.15s
 }
-.update-btn{
-display:block;margin-top:12px;
-background:#1e88e5;color:#fff;
-padding:10px;border-radius:10px;
-text-align:center;text-decoration:none
-}
-.logout{
-margin-top:15px;width:100%;padding:14px;
-border:none;border-radius:14px;
-background:#ff4b5c;color:#fff;font-weight:bold
-}
+.menu:active{transform:scale(.96)}
+.menu span{font-size:30px;display:block;margin-bottom:8px}
 </style>
 </head>
 
@@ -96,7 +120,15 @@ background:#ff4b5c;color:#fff;font-weight:bold
 
 <div id="dashboard" style="display:none">
 
-<div id="welcome" class="profile-header"></div>
+<div class="top-menu">
+<div class="menu-btn" onclick="toggleDropdown()">⋮</div>
+<div class="dropdown" id="dropdown">
+<div onclick="logout()">Keluar</div>
+</div>
+</div>
+
+<div class="welcome">Welcome di Web Umpar RSDS</div>
+<div class="nama-user" id="namaUser"></div>
 
 <div id="messageContainer"></div>
 
@@ -108,111 +140,136 @@ background:#ff4b5c;color:#fff;font-weight:bold
 
 <div id="tabContent"></div>
 
-<button class="logout" onclick="logout()">Keluar</button>
-
 </div>
 </div>
 
 <script>
 const GAS_URL="https://script.google.com/macros/s/AKfycbw9w6wPyncNC2q_1_XLpx3JYeF7CsIcVFa_Kyi_62jIpfHDLuXni9bQu38hcuKBGYBy/exec";
-
 let globalData=null;
 
+window.onload=()=>{
+const session=localStorage.getItem("rsds_session");
+if(session){
+fetchData(session,true);
+}
+};
+
 function login(){
-  const nip=document.getElementById("nip").value.trim();
-  if(!nip) return;
-  document.getElementById("loading").style.display="block";
-  fetch(GAS_URL,{method:"POST",body:JSON.stringify({nip})})
-  .then(r=>r.json())
-  .then(r=>{
-    if(!r.status){alert(r.message);return;}
-    globalData=r.data;
-    document.getElementById("loginBox").style.display="none";
-    document.getElementById("dashboard").style.display="block";
-    renderAll();
-  });
+const nip=document.getElementById("nip").value.trim();
+if(!nip) return;
+localStorage.setItem("rsds_session",nip);
+fetchData(nip,false);
 }
 
-function renderAll(){
-  const nama=globalData.profile.NAMA||globalData.profile.nama||"";
-  document.getElementById("welcome").innerText=
-  "Welcome di Web Umpar RSDS Sdr/i "+nama;
-
-  renderPesan();
-  showTab(0);
+function fetchData(nip,isAuto){
+document.getElementById("loading").style.display="block";
+fetch(GAS_URL,{method:"POST",body:JSON.stringify({nip})})
+.then(r=>r.json())
+.then(r=>{
+if(!r.status){alert(r.message);logout();return;}
+globalData=r.data;
+document.getElementById("loginBox").style.display="none";
+document.getElementById("dashboard").style.display="block";
+document.getElementById("namaUser").innerText=
+"Sdr/i "+(globalData.profile.NAMA||globalData.profile.nama||"");
+renderPesan();
+showTab(0);
+});
 }
 
 function renderPesan(){
-  if(!globalData.pesan.length) return;
-
-  let html=`<div class="message-header" onclick="toggleMsg()">
-  <div>📢 Pesan Penting</div>
-  <div>${globalData.pesan.length}</div>
-  </div>
-  <div class="message-box" id="msgBox">`;
-
-  globalData.pesan.forEach((m,i)=>{
-    html+=`<div class="message-card">${m.text}
-    <div style="font-size:11px;color:#777">${m.time}</div></div>`;
-  });
-
-  html+="</div>";
-  document.getElementById("messageContainer").innerHTML=html;
+if(!globalData.pesan.length) return;
+let html=`<div class="message-header" onclick="toggleMsg()">
+<div>📢 Pesan Penting</div>
+<div>${globalData.pesan.length}</div>
+</div>
+<div class="message-box" id="msgBox">`;
+globalData.pesan.forEach(m=>{
+html+=`<div class="message-card">${m.text}
+<div style="font-size:11px;color:#777">${m.time}</div></div>`;
+});
+html+="</div>";
+document.getElementById("messageContainer").innerHTML=html;
 }
 
 function toggleMsg(){
-  const b=document.getElementById("msgBox");
-  b.style.display=b.style.display==="block"?"none":"block";
+const b=document.getElementById("msgBox");
+b.style.display=b.style.display==="block"?"none":"block";
 }
 
 function showTab(i){
-  document.querySelectorAll(".tab").forEach((t,idx)=>{
-    t.classList.toggle("active",idx===i);
-  });
-
-  if(i===0) renderRiwayat();
-  if(i===1) renderLayanan();
-  if(i===2) renderProfil();
+document.querySelectorAll(".tab").forEach((t,idx)=>{
+t.classList.toggle("active",idx===i);
+});
+if(i===0) renderRiwayat();
+if(i===1) renderLayanan();
+if(i===2) renderProfil();
 }
 
 function renderRiwayat(){
-  let h="<div style='margin-bottom:10px;font-size:13px;color:#666'>Pantau Pengajuan Layanan Secara Berkala</div>";
-  if(!globalData.riwayat.length){
-    h+="<div style='text-align:center;color:#777'>Belum ada aktivitas</div>";
-  }else{
-    globalData.riwayat.forEach(x=>{
-      h+=`<div class="card"><b>${x.sheet.toUpperCase()}</b><br>`;
-      Object.entries(x.detail).forEach(([k,v])=>{
-        if(k==="TIMESTAMP") return;
-        h+=`<div>${k}: ${v}</div>`;
-      });
-      h+="</div>";
-    });
-  }
-  document.getElementById("tabContent").innerHTML=h;
+let h="<div style='margin-bottom:10px;font-size:13px;color:#666'>Pantau Pengajuan Layanan Secara Berkala</div>";
+if(!globalData.riwayat.length){
+h+="<div style='text-align:center;color:#777'>Belum ada aktivitas</div>";
+}else{
+globalData.riwayat.forEach(x=>{
+h+=`<div class="card card-riwayat"><b>${x.sheet.toUpperCase()}</b><br>`;
+Object.entries(x.detail).forEach(([k,v])=>{
+if(k==="TIMESTAMP") return;
+if(String(v).startsWith("http")){
+h+=`<div style="margin-top:6px">
+<a href="${v}" target="_blank" style="color:#fff;text-decoration:none">
+📂 Buka Folder
+</a></div>`;
+}else{
+h+=`<div>${k}: ${v}</div>`;
+}
+});
+h+="</div>";
+});
+}
+document.getElementById("tabContent").innerHTML=h;
 }
 
 function renderLayanan(){
-  document.getElementById("tabContent").innerHTML=
-  "<div class='card'>Menu layanan menyusul</div>";
+document.getElementById("tabContent").innerHTML=`
+<div class="grid">
+<div class="menu" onclick="openUrl('https://rikoantah.github.io/pangkat-rsds-aktive/')"><span>👤</span>Pangkat</div>
+<div class="menu" onclick="openUrl('https://rikoantah.github.io/Gaji-Berkala-RSDS-Soedarso/')"><span>💰</span>Gaji Berkala</div>
+<div class="menu" onclick="openUrl('https://rikoantah.github.io/Ukom-Rsds/')"><span>📝</span>UKOM</div>
+<div class="menu" onclick="openUrl('https://rikoantah.github.io/Jafung-D/')"><span>💼</span>Jabatan Fungsional</div>
+<div class="menu" onclick="openUrl('https://rikoantahsaputra94-jpg.github.io/Tampilan-Cuti-Umpar/')"><span>📅</span>Cuti</div>
+<div class="menu" onclick="openUrl('https://script.google.com/macros/s/AKfycbwAwouQ9BK6S9GzQeFtkUxKQJY_iunIfS35Jfe0wYD8L7A6-C5InI7IkFW4eSOnEKQz/exec')"><span>🧮</span>Angka Kredit</div>
+<div class="menu" onclick="openUrl('https://rikoantah.github.io/sip-sib/')"><span>🪪</span>SIP / SIB</div>
+<div class="menu" onclick="openUrl('https://rikoantah.github.io/slks-d/')"><span>⭐</span>SLKS</div>
+</div>`;
 }
 
 function renderProfil(){
-  let h="<div class='profile-box'>";
-  Object.entries(globalData.profile).forEach(([k,v])=>{
-    h+=`<div><b>${k}</b>: ${v||"-"}</div>`;
-  });
-  h+=`
-  <div style="margin-top:10px;color:#c62828;font-size:12px">
-  Jika ada data yang belum update silahkan kirimkan perubahan data.
-  </div>
-  <a href="#" class="update-btn">Permohonan Update Data</a>
-  </div>`;
-  document.getElementById("tabContent").innerHTML=h;
+let h=`<div class="card card-profil">`;
+Object.entries(globalData.profile).forEach(([k,v])=>{
+h+=`<div><b>${k}</b>: ${v||"-"}</div>`;
+});
+h+=`<div style="margin-top:10px;font-size:12px">
+Jika ada data yang belum update silahkan kirimkan perubahan data.
+</div>
+<div style="margin-top:10px">
+<a href="#" style="color:#fff;text-decoration:underline">Permohonan Update Data</a>
+</div></div>`;
+document.getElementById("tabContent").innerHTML=h;
+}
+
+function openUrl(url){
+window.open(url,"_blank");
+}
+
+function toggleDropdown(){
+const d=document.getElementById("dropdown");
+d.style.display=d.style.display==="block"?"none":"block";
 }
 
 function logout(){
-  location.reload();
+localStorage.removeItem("rsds_session");
+location.reload();
 }
 </script>
 
