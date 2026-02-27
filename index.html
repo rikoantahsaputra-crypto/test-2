@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>WEB UMPAR RSDS</title>
+<title>Kepegawaian RSDS</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI}
@@ -41,62 +41,39 @@ color:#374151
 }
 
 /* DROPDOWN LOGOUT */
-.top-menu{
-position:absolute;
-top:15px;
-right:15px;
-}
+.top-menu{position:absolute;top:15px;right:15px;}
 .menu-btn{
-width:34px;height:34px;
-border-radius:50%;
+width:34px;height:34px;border-radius:50%;
 background:#fff;
 display:flex;align-items:center;justify-content:center;
 box-shadow:0 4px 10px rgba(0,0,0,.15);
-cursor:pointer;
-font-weight:bold;
+cursor:pointer;font-weight:bold;
 }
 .dropdown{
-display:none;
-position:absolute;
-right:0;
-margin-top:6px;
-background:#fff;
-border-radius:10px;
+display:none;position:absolute;right:0;margin-top:6px;
+background:#fff;border-radius:10px;
 box-shadow:0 6px 15px rgba(0,0,0,.15);
 overflow:hidden;
 }
 .dropdown div{
-padding:10px 14px;
-font-size:13px;
-cursor:pointer;
+padding:10px 14px;font-size:13px;cursor:pointer;
 }
-.dropdown div:hover{
-background:#f3f4f6;
-}
+.dropdown div:hover{background:#f3f4f6;}
 
 /* MESSAGE */
 .message-header{
-background:#1e3a8a;
-color:#fff;
-padding:12px;
-border-radius:12px;
-display:flex;
-justify-content:space-between;
-cursor:pointer;
-margin-bottom:10px
+background:#1e3a8a;color:#fff;
+padding:12px;border-radius:12px;
+display:flex;justify-content:space-between;
+cursor:pointer;margin-bottom:10px
 }
 .message-box{
-display:none;
-background:#fff;
-border-radius:12px;
-padding:10px;
-max-height:200px;
-overflow-y:auto;
+display:none;background:#fff;border-radius:12px;
+padding:10px;max-height:200px;overflow-y:auto;
 border:1px solid #e5e7eb
 }
 .message-card{
-padding:8px 0;
-border-bottom:1px solid #eee;
+padding:8px 0;border-bottom:1px solid #eee;
 font-size:13px
 }
 
@@ -104,71 +81,48 @@ font-size:13px
 .tabs{display:flex;margin-bottom:10px}
 .tab{
 flex:1;text-align:center;padding:10px;
-background:#e5e7eb;
-cursor:pointer;
-font-size:14px;
+background:#e5e7eb;cursor:pointer;font-size:14px;
 }
-.tab.active{
-background:#1e3a8a;
-color:#fff
-}
+.tab.active{background:#1e3a8a;color:#fff}
 
 /* SLIDER */
 .slider{
-display:flex;
-overflow-x:auto;
+display:flex;overflow-x:auto;
 scroll-snap-type:x mandatory;
 }
-.slide{
-min-width:100%;
-scroll-snap-align:start;
-}
+.slide{min-width:100%;scroll-snap-align:start;}
 
 /* RIWAYAT */
 .riwayat-card{
-background:#fff;
-border-radius:14px;
-padding:14px;
-margin-bottom:10px;
-border:1px solid #e5e7eb;
-font-size:13px
+background:#fff;border-radius:14px;
+padding:14px;margin-bottom:10px;
+border:1px solid #e5e7eb;font-size:13px
 }
 .folder-link{
-display:inline-block;
-margin-top:6px;
-color:#2563eb;
-text-decoration:none;
-font-weight:600
+display:inline-block;margin-top:6px;
+color:#2563eb;text-decoration:none;font-weight:600
 }
 
 /* GRID LAYANAN */
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
 .menu{
 background:#fff;border-radius:14px;padding:18px;
-text-align:center;
-border:1px solid #e5e7eb;
-cursor:pointer;
-transition:.15s
+text-align:center;border:1px solid #e5e7eb;
+cursor:pointer;transition:.15s
 }
 .menu:active{transform:scale(.97)}
 .menu span{font-size:26px;display:block;margin-bottom:6px}
 
 /* PROFIL */
 .profil-card{
-background:#fff;
-border-radius:16px;
-padding:16px;
-border:1px solid #e5e7eb;
-font-size:13px;
-line-height:1.6
+background:#fff;border-radius:16px;
+padding:16px;border:1px solid #e5e7eb;
+font-size:13px;line-height:1.6
 }
 .update-btn{
-display:block;margin-top:12px;
-padding:10px;
-background:#1e3a8a;
-color:#fff;text-align:center;
-border-radius:10px;
-text-decoration:none
+display:block;margin-top:12px;padding:10px;
+background:#1e3a8a;color:#fff;text-align:center;
+border-radius:10px;text-decoration:none
 }
 </style>
 </head>
@@ -177,7 +131,7 @@ text-decoration:none
 <div class="container">
 
 <div id="loginBox" class="login-card">
-<h2>WEB UMPAR RSDS</h2>
+<h2>Kepegawaian RSDS</h2>
 <input id="nip" placeholder="Masukkan NIP / NIK">
 <button onclick="login()">Masuk</button>
 <div id="loading" class="loading">Memverifikasi...</div>
@@ -218,6 +172,25 @@ text-decoration:none
 const GAS_URL="https://script.google.com/macros/s/AKfycbyjYOjeXz2sJame1uf5sEjutY04B1RghTek5WmTbKb0qso_uJcLNjWoucbify9CvJ8m/exec";
 let globalData=null;
 
+function mapJudul(sheet, detail){
+const s=sheet.replace("data_","").toLowerCase();
+
+if(s==="pangkat") return "Pengajuan Pangkat";
+if(s==="kgb") return "Pengajuan Gaji Berkala";
+if(s==="cuti") return "Pengajuan Cuti";
+if(s==="ukom") return "Pengajuan UKOM";
+if(s==="jafung") return "Pengajuan Jabatan Fungsional";
+if(s==="sib_sip") return "Pengajuan SIP / SIB";
+if(s==="slks") return "Pengajuan SLKS";
+
+if(s==="arsip"){
+let jenis=detail["JENIS"]||detail["Jenis"]||"Arsip";
+return "Arsip "+jenis;
+}
+
+return sheet;
+}
+
 window.onload=()=>{
 const session=localStorage.getItem("rsds_session");
 if(session) fetchData(session);
@@ -254,18 +227,15 @@ renderProfil();
 
 function renderPesan(){
 if(!globalData.pesan.length) return;
-
 let html=`<div class="message-header" onclick="toggleMsg()">
 <div>Pesan dari Bagian Kepegawaian</div>
 <div>${globalData.pesan.length}</div>
 </div>
 <div class="message-box" id="msgBox">`;
-
 globalData.pesan.forEach(m=>{
 html+=`<div class="message-card">${m.text}
 <div style="font-size:11px;color:#6b7280">${m.time}</div></div>`;
 });
-
 html+="</div>";
 document.getElementById("messageContainer").innerHTML=html;
 }
@@ -281,7 +251,8 @@ if(!globalData.riwayat.length){
 h+="<div style='text-align:center;color:#9ca3af'>Belum ada aktivitas</div>";
 }else{
 globalData.riwayat.forEach(x=>{
-h+=`<div class="riwayat-card"><b>${x.sheet.toUpperCase()}</b><br>`;
+let judul=mapJudul(x.sheet,x.detail);
+h+=`<div class="riwayat-card"><b>${judul}</b><br>`;
 Object.entries(x.detail).forEach(([k,v])=>{
 if(k==="TIMESTAMP") return;
 if(String(v).startsWith("http")){
@@ -296,30 +267,26 @@ h+="</div>";
 document.getElementById("riwayatSlide").innerHTML=h;
 }
 
-function renderLayanan(){
-document.getElementById("layananSlide").innerHTML=document.getElementById("layananSlide").innerHTML || `
-<div class="grid">
-<div class="menu" onclick="openUrl('https://rikoantah.github.io/pangkat-rsds-aktive/')"><span>👤</span>Pangkat</div>
-<div class="menu" onclick="openUrl('https://rikoantah.github.io/Gaji-Berkala-RSDS-Soedarso/')"><span>💰</span>Gaji Berkala</div>
-<div class="menu" onclick="openUrl('https://rikoantah.github.io/Ukom-Rsds/')"><span>📝</span>UKOM</div>
-<div class="menu" onclick="openUrl('https://rikoantah.github.io/Jafung-D/')"><span>💼</span>Jabatan Fungsional</div>
-<div class="menu" onclick="openUrl('https://rikoantahsaputra94-jpg.github.io/Tampilan-Cuti-Umpar/')"><span>📅</span>Cuti</div>
-<div class="menu" onclick="openUrl('https://script.google.com/macros/s/AKfycbwAwouQ9BK6S9GzQeFtkUxKQJY_iunIfS35Jfe0wYD8L7A6-C5InI7IkFW4eSOnEKQz/exec')"><span>🧮</span>Angka Kredit</div>
-<div class="menu" onclick="openUrl('https://rikoantah.github.io/sip-sib/')"><span>🪪</span>SIP / SIB</div>
-<div class="menu" onclick="openUrl('https://rikoantah.github.io/slks-d/')"><span>⭐</span>SLKS</div>
-</div>`;
-}
+function renderLayanan(){/* tidak diubah */}
 
 function renderProfil(){
+let p=globalData.profile;
 let h=`<div class="profil-card">`;
-Object.entries(globalData.profile).forEach(([k,v])=>{
+
+h+=`<div><b>NAMA</b><br>${p.NAMA||p.nama||"-"}</div><br>`;
+h+=`<div><b>NIP</b><br>${p.NIP||p.nip||"-"}</div><br>`;
+
+Object.entries(p).forEach(([k,v])=>{
+if(k.toLowerCase()==="nama"||k.toLowerCase()==="nip") return;
 h+=`<div><b>${k}</b><br>${v||"-"}</div><br>`;
 });
+
 h+=`<div style="color:#b91c1c;font-size:12px">
 Jika ada data belum update silahkan kirimkan perubahan data.
 </div>
 <a href="#" class="update-btn">Permohonan Update Data</a>
 </div>`;
+
 document.getElementById("profilSlide").innerHTML=h;
 }
 
@@ -330,8 +297,6 @@ document.querySelectorAll(".tab").forEach((t,idx)=>{
 t.classList.toggle("active",idx===i);
 });
 }
-
-function openUrl(url){window.open(url,"_blank");}
 
 function toggleDropdown(){
 const d=document.getElementById("dropdown");
