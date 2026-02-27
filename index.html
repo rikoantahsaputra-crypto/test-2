@@ -173,7 +173,7 @@ const GAS_URL="https://script.google.com/macros/s/AKfycbyjYOjeXz2sJame1uf5sEjutY
 let globalData=null;
 
 function mapJudul(sheet, detail){
-const s=sheet.replace("data_","").toLowerCase();
+const s = sheet.replace("data_","").toLowerCase();
 
 if(s==="pangkat") return "Pengajuan Pangkat";
 if(s==="kgb") return "Pengajuan Gaji Berkala";
@@ -184,8 +184,20 @@ if(s==="sib_sip") return "Pengajuan SIP / SIB";
 if(s==="slks") return "Pengajuan SLKS";
 
 if(s==="arsip"){
-let jenis=detail["JENIS"]||detail["Jenis"]||"Arsip";
-return "Arsip "+jenis;
+    let jenis =
+      detail["jenis-arsip"] ||
+      detail["JENIS-ARSIP"] ||
+      detail["jenis_arsip"] ||
+      detail["JENIS_ARSIP"] ||
+      "";
+
+    if(jenis.includes(":")){
+        jenis = jenis.split(":")[1];
+    }
+
+    jenis = jenis.trim();
+
+    return jenis ? "Arsip " + jenis : "Arsip";
 }
 
 return sheet;
