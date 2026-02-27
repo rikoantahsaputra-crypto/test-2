@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>UMUM & APARATUR RSDS</title>
+<title>WEB UMPAR RSDS</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI}
-body{background:#f2f4f7;color:#222}
+body{background:#f3f5f9;color:#222}
 .container{max-width:430px;margin:auto;padding:15px}
 
 /* LOGIN */
@@ -16,75 +16,70 @@ background:linear-gradient(135deg,#1e3c72,#2a5298);
 color:#fff;padding:35px;border-radius:22px;
 box-shadow:0 15px 40px rgba(0,0,0,.3);text-align:center
 }
-.login-card input{width:100%;padding:14px;border-radius:12px;border:none;margin:15px 0;font-size:15px}
-.login-card button{width:100%;padding:14px;border:none;border-radius:12px;background:#00c6ff;color:#fff;font-weight:bold;font-size:15px}
-.loading{display:none;margin-top:12px;font-size:13px}
+.login-card input{width:100%;padding:14px;border-radius:12px;border:none;margin:15px 0}
+.login-card button{width:100%;padding:14px;border:none;border-radius:12px;background:#00c6ff;color:#fff;font-weight:bold}
+.loading{display:none;margin-top:10px;font-size:13px}
 
-/* PROFILE */
-.profile{
-background:#fff;border-radius:18px;padding:15px;margin-bottom:15px;
-box-shadow:0 8px 20px rgba(0,0,0,.08);cursor:pointer
-}
-.profile-detail{
-display:none;font-size:13px;margin-top:10px;color:#555;line-height:1.6
+/* PROFILE HEADER */
+.profile-header{
+background:#fff;border-radius:18px;padding:15px;
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+margin-bottom:12px;font-weight:600
 }
 
-/* PESAN */
-.message-wrapper{margin-bottom:15px}
+/* MESSAGE */
 .message-header{
-background:#fff;border-radius:18px;padding:14px 16px;
-box-shadow:0 6px 15px rgba(0,0,0,.06);
-display:flex;justify-content:space-between;align-items:center;
-cursor:pointer;
+background:linear-gradient(90deg,#ff512f,#dd2476);
+color:#fff;padding:14px;border-radius:16px;
+display:flex;justify-content:space-between;
+cursor:pointer;margin-bottom:10px
 }
-.message-title{font-weight:600;font-size:14px}
-.badge{
-background:#ff3b30;color:#fff;
-font-size:12px;padding:4px 8px;border-radius:20px
+.message-box{
+display:none;
+background:#fff;
+border-radius:14px;
+padding:10px;
+max-height:220px;
+overflow-y:auto;
+box-shadow:0 6px 15px rgba(0,0,0,.1)
 }
-.message-box{display:none;margin-top:8px}
 .message-card{
-background:#fff8e1;border-left:4px solid #ff9800;
-border-radius:14px;padding:12px;margin-bottom:8px;
-font-size:13px;line-height:1.5;
-box-shadow:0 4px 10px rgba(0,0,0,.05)
+background:#fff8e1;
+border-left:4px solid #ff9800;
+padding:10px;margin-bottom:8px;
+border-radius:10px;font-size:13px
 }
-.message-time{font-size:11px;color:#777;margin-top:4px}
 
 /* TABS */
-.tabs{display:flex;gap:10px;margin-bottom:10px;position:relative;z-index:5}
-.tab{flex:1;text-align:center;padding:10px;border-radius:12px;background:#e0e0e0;font-size:14px;cursor:pointer}
+.tabs{display:flex;gap:8px;margin-bottom:12px}
+.tab{flex:1;text-align:center;padding:10px;border-radius:12px;background:#e0e0e0;cursor:pointer}
 .tab.active{background:#1e88e5;color:#fff}
 
-.slider{display:flex;overflow-x:auto;scroll-snap-type:x mandatory}
-.slide{min-width:100%;scroll-snap-align:start}
-.slide:first-child{height:calc(100vh - 320px);overflow:hidden}
-
-/* MENU */
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
-.menu{
-background:#fff;border-radius:18px;padding:20px;text-align:center;
-box-shadow:0 8px 20px rgba(0,0,0,.08);
-cursor:pointer;transition:.15s
-}
-.menu:active{transform:scale(.96)}
-.menu span{font-size:30px;display:block;margin-bottom:8px}
-
-/* RIWAYAT */
+/* CARD */
 .card{
-background:#2f4858;color:#fff;border-radius:18px;
-padding:15px;margin-bottom:12px;font-size:13px
-}
-.folder-btn{
-display:inline-block;margin-top:6px;padding:6px 10px;
-background:#00c6ff;color:#fff;border-radius:8px;
-font-size:12px;text-decoration:none
+background:linear-gradient(135deg,#667eea,#764ba2);
+color:#fff;border-radius:20px;
+padding:16px;margin-bottom:12px;
+box-shadow:0 10px 25px rgba(0,0,0,.15);
+font-size:13px
 }
 
-/* LOGOUT */
+/* PROFILE TAB */
+.profile-box{
+background:#fff;border-radius:18px;
+padding:15px;box-shadow:0 6px 15px rgba(0,0,0,.1);
+font-size:13px;line-height:1.6
+}
+.update-btn{
+display:block;margin-top:12px;
+background:#1e88e5;color:#fff;
+padding:10px;border-radius:10px;
+text-align:center;text-decoration:none
+}
 .logout{
-margin-top:15px;width:100%;padding:14px;border:none;
-border-radius:14px;background:#ff4b5c;color:#fff;font-weight:bold;font-size:15px
+margin-top:15px;width:100%;padding:14px;
+border:none;border-radius:14px;
+background:#ff4b5c;color:#fff;font-weight:bold
 }
 </style>
 </head>
@@ -93,171 +88,130 @@ border-radius:14px;background:#ff4b5c;color:#fff;font-weight:bold;font-size:15px
 <div class="container">
 
 <div id="loginBox" class="login-card">
-<h2>UMUM & APARATUR</h2>
-<p>RSUD dr. Soedarso</p>
+<h2>WEB UMPAR RSDS</h2>
 <input id="nip" placeholder="Masukkan NIP / NIK">
-<button id="btnLogin" onclick="login()">Masuk</button>
-<div class="loading" id="loading">Memverifikasi data…</div>
+<button onclick="login()">Masuk</button>
+<div id="loading" class="loading">Memverifikasi...</div>
 </div>
 
 <div id="dashboard" style="display:none">
 
-<div class="profile" onclick="toggleProfile()">
-<h3 id="namaHeader"></h3>
-<div class="profile-detail" id="profileDetail"></div>
-</div>
+<div id="welcome" class="profile-header"></div>
 
 <div id="messageContainer"></div>
 
 <div class="tabs">
-<div class="tab active" id="tabL">Layanan</div>
-<div class="tab" id="tabR">Riwayat Aktivitas</div>
+<div class="tab active" onclick="showTab(0)">Riwayat</div>
+<div class="tab" onclick="showTab(1)">Layanan</div>
+<div class="tab" onclick="showTab(2)">Profil</div>
 </div>
 
-<div class="slider" id="slider">
-
-<!-- MENU -->
-<div class="slide">
-<div class="grid">
-<div class="menu" data-url="https://rikoantah.github.io/pangkat-rsds-aktive/"><span>👤</span>Pangkat</div>
-<div class="menu" data-url="https://rikoantah.github.io/Gaji-Berkala-RSDS-Soedarso/"><span>💰</span>Gaji Berkala</div>
-<div class="menu" data-url="https://rikoantah.github.io/Ukom-Rsds/"><span>📝</span>UKOM</div>
-<div class="menu" data-url="https://rikoantah.github.io/Jafung-D/"><span>💼</span>Jabatan Fungsional</div>
-<div class="menu" data-url="https://rikoantahsaputra94-jpg.github.io/Tampilan-Cuti-Umpar/"><span>📅</span>Cuti</div>
-<div class="menu" data-url="https://script.google.com/macros/s/AKfycbwAwouQ9BK6S9GzQeFtkUxKQJY_iunIfS35Jfe0wYD8L7A6-C5InI7IkFW4eSOnEKQz/exec"><span>🧮</span>Angka Kredit</div>
-<div class="menu" data-url="https://rikoantah.github.io/sip-sib/"><span>🪪</span>SIP / SIB</div>
-<div class="menu" data-url="https://rikoantah.github.io/slks-d/"><span>⭐</span>SLKS</div>
-</div>
-</div>
-
-<!-- RIWAYAT NORMAL -->
-<div class="slide">
-<div id="riwayatBox"></div>
-</div>
-
-</div>
+<div id="tabContent"></div>
 
 <button class="logout" onclick="logout()">Keluar</button>
+
 </div>
 </div>
 
 <script>
-const GAS_URL="https://script.google.com/macros/s/AKfycbzvarUpBIA0-9V_obWwDhDXFLKMg5ODkN_rqUc-vgG4ESrMG3HHsh1IEsQYPcrXZ-DY/exec";
+const GAS_URL="https://script.google.com/macros/s/AKfycbw9w6wPyncNC2q_1_XLpx3JYeF7CsIcVFa_Kyi_62jIpfHDLuXni9bQu38hcuKBGYBy/exec";
 
-window.onload=()=>{
-  const nip = localStorage.getItem("rsds_session");
-  if(nip){
-    document.getElementById("loading").style.display="block";
-    document.getElementById("btnLogin").disabled=true;
-    fetchData(nip,true);
-  }
-};
+let globalData=null;
 
 function login(){
   const nip=document.getElementById("nip").value.trim();
   if(!nip) return;
-  localStorage.setItem("rsds_session",nip);
-  document.getElementById("btnLogin").disabled=true;
   document.getElementById("loading").style.display="block";
-  fetchData(nip,false);
-}
-
-function fetchData(nip,isAuto){
   fetch(GAS_URL,{method:"POST",body:JSON.stringify({nip})})
   .then(r=>r.json())
   .then(r=>{
-    if(!r.status){ logout(); return; }
+    if(!r.status){alert(r.message);return;}
+    globalData=r.data;
     document.getElementById("loginBox").style.display="none";
     document.getElementById("dashboard").style.display="block";
-    showProfile(r.data.profile,isAuto);
-    showMessages(r.data.pesan);
-    showRiwayat(r.data.riwayat);
+    renderAll();
   });
 }
 
-function showProfile(p,isAuto){
-  let greet = isAuto ? "Selamat datang kembali, " : "Hi, ";
-  document.getElementById("namaHeader").innerText = greet + p.nama;
-  document.getElementById("profileDetail").innerHTML = `
-    <b>NIP:</b> ${p.nip}<br>
-    <b>Gol:</b> ${p.gol || "-"}<br>
-    <b>TMT Gol:</b> ${p.tmt_gol || "-"}<br>
-    <b>Jabatan:</b> ${p.jabatan || "-"}<br>
-    <b>TMT Jabatan:</b> ${p.tmt_jabatan || "-"}
-  `;
+function renderAll(){
+  const nama=globalData.profile.NAMA||globalData.profile.nama||"";
+  document.getElementById("welcome").innerText=
+  "Welcome di Web Umpar RSDS Sdr/i "+nama;
+
+  renderPesan();
+  showTab(0);
 }
 
-function toggleProfile(){
-  const d=document.getElementById("profileDetail");
-  d.style.display=d.style.display==="block"?"none":"block";
-}
+function renderPesan(){
+  if(!globalData.pesan.length) return;
 
-function showMessages(messages){
-  if(!messages || !messages.length) return;
-  let html=`
-  <div class="message-wrapper">
-    <div class="message-header" onclick="toggleMessages()">
-      <div class="message-title">📩 Pesan Terbaru Untuk Anda</div>
-      <div class="badge">${messages.length}</div>
-    </div>
-    <div class="message-box" id="messageBox">`;
-  messages.forEach(m=>{
-    html+=`
-      <div class="message-card">
-        ${m.text}
-        <div class="message-time">${m.time}</div>
-      </div>`;
+  let html=`<div class="message-header" onclick="toggleMsg()">
+  <div>📢 Pesan Penting</div>
+  <div>${globalData.pesan.length}</div>
+  </div>
+  <div class="message-box" id="msgBox">`;
+
+  globalData.pesan.forEach((m,i)=>{
+    html+=`<div class="message-card">${m.text}
+    <div style="font-size:11px;color:#777">${m.time}</div></div>`;
   });
-  html+=`</div></div>`;
+
+  html+="</div>";
   document.getElementById("messageContainer").innerHTML=html;
 }
 
-function toggleMessages(){
-  const box=document.getElementById("messageBox");
-  box.style.display = box.style.display==="block"?"none":"block";
+function toggleMsg(){
+  const b=document.getElementById("msgBox");
+  b.style.display=b.style.display==="block"?"none":"block";
 }
 
-function showRiwayat(data){
-  let h="";
-  if(!data.length){
-    h="<div style='text-align:center;color:#666;font-size:13px'>Belum ada aktivitas</div>";
+function showTab(i){
+  document.querySelectorAll(".tab").forEach((t,idx)=>{
+    t.classList.toggle("active",idx===i);
+  });
+
+  if(i===0) renderRiwayat();
+  if(i===1) renderLayanan();
+  if(i===2) renderProfil();
+}
+
+function renderRiwayat(){
+  let h="<div style='margin-bottom:10px;font-size:13px;color:#666'>Pantau Pengajuan Layanan Secara Berkala</div>";
+  if(!globalData.riwayat.length){
+    h+="<div style='text-align:center;color:#777'>Belum ada aktivitas</div>";
   }else{
-    data.forEach(x=>{
-      h+=`<div class="card"><b>${x.sheet.toUpperCase()}</b><br>${
-        Object.entries(x.detail).map(([k,v])=>{
-          if(k==="TIMESTAMP") return "";
-          if(String(v).startsWith("http"))
-            return `<a class="folder-btn" href="${v}" target="_blank">📂 Buka Folder</a>`;
-          return `<div>${k}: ${v}</div>`;
-        }).join("")
-      }</div>`;
+    globalData.riwayat.forEach(x=>{
+      h+=`<div class="card"><b>${x.sheet.toUpperCase()}</b><br>`;
+      Object.entries(x.detail).forEach(([k,v])=>{
+        if(k==="TIMESTAMP") return;
+        h+=`<div>${k}: ${v}</div>`;
+      });
+      h+="</div>";
     });
   }
-  document.getElementById("riwayatBox").innerHTML=h;
+  document.getElementById("tabContent").innerHTML=h;
 }
 
-const slider=document.getElementById("slider");
-const tabL=document.getElementById("tabL");
-const tabR=document.getElementById("tabR");
+function renderLayanan(){
+  document.getElementById("tabContent").innerHTML=
+  "<div class='card'>Menu layanan menyusul</div>";
+}
 
-tabL.addEventListener("click",()=>slider.scrollTo({left:0,behavior:"smooth"}));
-tabR.addEventListener("click",()=>slider.scrollTo({left:slider.offsetWidth,behavior:"smooth"}));
-
-slider.addEventListener("scroll",()=>{
-  const i=Math.round(slider.scrollLeft/slider.offsetWidth);
-  tabL.classList.toggle("active",i===0);
-  tabR.classList.toggle("active",i===1);
-});
-
-document.querySelectorAll(".menu").forEach(m=>{
-  m.addEventListener("click",()=>{
-    const url=m.dataset.url;
-    if(url) setTimeout(()=>window.open(url,"_blank"),120);
+function renderProfil(){
+  let h="<div class='profile-box'>";
+  Object.entries(globalData.profile).forEach(([k,v])=>{
+    h+=`<div><b>${k}</b>: ${v||"-"}</div>`;
   });
-});
+  h+=`
+  <div style="margin-top:10px;color:#c62828;font-size:12px">
+  Jika ada data yang belum update silahkan kirimkan perubahan data.
+  </div>
+  <a href="#" class="update-btn">Permohonan Update Data</a>
+  </div>`;
+  document.getElementById("tabContent").innerHTML=h;
+}
 
 function logout(){
-  localStorage.removeItem("rsds_session");
   location.reload();
 }
 </script>
