@@ -116,10 +116,9 @@ border-radius:14px;background:#ff4b5c;color:#fff;font-weight:bold;font-size:15px
 
 <div class="slider" id="slider">
 
-<!-- MENU DENGAN LINK ASLI -->
+<!-- MENU -->
 <div class="slide">
 <div class="grid">
-
 <div class="menu" data-url="https://rikoantah.github.io/pangkat-rsds-aktive/"><span>👤</span>Pangkat</div>
 <div class="menu" data-url="https://rikoantah.github.io/Gaji-Berkala-RSDS-Soedarso/"><span>💰</span>Gaji Berkala</div>
 <div class="menu" data-url="https://rikoantah.github.io/Ukom-Rsds/"><span>📝</span>UKOM</div>
@@ -128,10 +127,10 @@ border-radius:14px;background:#ff4b5c;color:#fff;font-weight:bold;font-size:15px
 <div class="menu" data-url="https://script.google.com/macros/s/AKfycbwAwouQ9BK6S9GzQeFtkUxKQJY_iunIfS35Jfe0wYD8L7A6-C5InI7IkFW4eSOnEKQz/exec"><span>🧮</span>Angka Kredit</div>
 <div class="menu" data-url="https://rikoantah.github.io/sip-sib/"><span>🪪</span>SIP / SIB</div>
 <div class="menu" data-url="https://rikoantah.github.io/slks-d/"><span>⭐</span>SLKS</div>
-
 </div>
 </div>
 
+<!-- RIWAYAT NORMAL -->
 <div class="slide">
 <div id="riwayatBox"></div>
 </div>
@@ -224,13 +223,19 @@ function showRiwayat(data){
     h="<div style='text-align:center;color:#666;font-size:13px'>Belum ada aktivitas</div>";
   }else{
     data.forEach(x=>{
-      h+=`<div class="card"><b>${x.sheet.toUpperCase()}</b></div>`;
+      h+=`<div class="card"><b>${x.sheet.toUpperCase()}</b><br>${
+        Object.entries(x.detail).map(([k,v])=>{
+          if(k==="TIMESTAMP") return "";
+          if(String(v).startsWith("http"))
+            return `<a class="folder-btn" href="${v}" target="_blank">📂 Buka Folder</a>`;
+          return `<div>${k}: ${v}</div>`;
+        }).join("")
+      }</div>`;
     });
   }
   document.getElementById("riwayatBox").innerHTML=h;
 }
 
-/* TAB FIX */
 const slider=document.getElementById("slider");
 const tabL=document.getElementById("tabL");
 const tabR=document.getElementById("tabR");
