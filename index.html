@@ -8,10 +8,13 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI}
 body{background:#f4f6f9;color:#1f2937}
-.container{max-width:430px;margin:auto;padding:15px;position:relative}
+
+/* WRAPPER */
+.wrapper{max-width:1200px;margin:auto;padding:15px;position:relative}
 
 /* LOGIN */
 .login-card{
+max-width:430px;margin:auto;
 background:#1e3a8a;color:#fff;padding:35px;border-radius:20px;
 box-shadow:0 10px 25px rgba(0,0,0,.2);text-align:center}
 .login-card input{
@@ -23,19 +26,13 @@ border-radius:10px;background:#2563eb;
 color:#fff;font-weight:600}
 .loading{display:none;margin-top:10px;font-size:13px}
 
+/* DASHBOARD LAYOUT */
+.dashboard-layout{display:block}
+
 /* HEADER */
 .header{text-align:center;margin-bottom:15px}
 .welcome{font-size:22px;font-weight:700;}
-.nama-user{
-font-size:17px;
-margin-top:6px;
-font-weight:600;
-color:#1e3a8a;
-background:#eef2ff;
-display:inline-block;
-padding:6px 14px;
-border-radius:20px;
-}
+.nama-user{font-size:16px;margin-top:4px;color:#374151}
 
 /* DROPDOWN */
 .top-menu{position:absolute;top:15px;right:15px;z-index:50;}
@@ -61,7 +58,7 @@ padding:10px;max-height:200px;overflow-y:auto;
 border:1px solid #e5e7eb}
 .message-card{padding:8px 0;border-bottom:1px solid #eee;font-size:13px}
 
-/* TABS */
+/* TABS (HP) */
 .tabs{display:flex;margin-bottom:10px}
 .tab{
 flex:1;text-align:center;padding:10px;
@@ -81,7 +78,7 @@ scroll-snap-align:start;
 flex-shrink:0;
 }
 
-/* RIWAYAT */
+/* CARD */
 .riwayat-card{
 background:#fff;border-radius:14px;
 padding:14px;margin-bottom:10px;
@@ -96,7 +93,7 @@ color:#2563eb;text-decoration:none;font-weight:600}
 background:#fff;border-radius:14px;padding:18px;
 text-align:center;border:1px solid #e5e7eb;
 cursor:pointer;transition:.15s}
-.menu:active{transform:scale(.97)}
+.menu:hover{box-shadow:0 6px 18px rgba(0,0,0,.1)}
 .menu span{font-size:26px;display:block;margin-bottom:6px}
 
 /* PROFIL */
@@ -104,22 +101,59 @@ cursor:pointer;transition:.15s}
 background:#fff;border-radius:16px;
 padding:16px;border:1px solid #e5e7eb;
 font-size:13px;line-height:1.6}
-.identitas-title{
-font-weight:700;
-font-size:15px;
-margin-bottom:12px;
-color:#1e3a8a;
-letter-spacing:1px;
-}
 .update-btn{
 display:block;margin-top:12px;padding:10px;
 background:#1e3a8a;color:#fff;text-align:center;
 border-radius:10px;text-decoration:none}
+
+/* DESKTOP MODE */
+@media (min-width:1024px){
+
+.dashboard-layout{
+display:grid;
+grid-template-columns:240px 1fr;
+gap:25px;
+}
+
+.sidebar{
+background:#fff;
+border-radius:16px;
+padding:20px;
+height:fit-content;
+border:1px solid #e5e7eb;
+}
+
+.sidebar h3{
+font-size:14px;
+margin-bottom:15px;
+color:#6b7280;
+text-transform:uppercase;
+letter-spacing:1px;
+}
+
+.sidebar-item{
+padding:10px;
+border-radius:10px;
+cursor:pointer;
+margin-bottom:8px;
+font-size:14px;
+}
+
+.sidebar-item.active,
+.sidebar-item:hover{
+background:#1e3a8a;
+color:#fff;
+}
+
+.tabs{display:none;}
+.slider{overflow:hidden;}
+.header{text-align:left;}
+}
 </style>
 </head>
 
 <body>
-<div class="container">
+<div class="wrapper">
 
 <div id="loginBox" class="login-card">
 <h2>Kepegawaian RSDS</h2>
@@ -136,6 +170,17 @@ border-radius:10px;text-decoration:none}
 <div onclick="logout()">Keluar Aplikasi</div>
 </div>
 </div>
+
+<div class="dashboard-layout">
+
+<div class="sidebar" id="sidebarMenu" style="display:none;">
+<h3>Menu</h3>
+<div class="sidebar-item active" onclick="goSlide(0)">Riwayat</div>
+<div class="sidebar-item" onclick="goSlide(1)">Layanan</div>
+<div class="sidebar-item" onclick="goSlide(2)">Profil</div>
+</div>
+
+<div class="main-content">
 
 <div class="header">
 <div class="welcome">Welcome To Kepegawaian RSDS</div>
@@ -158,23 +203,15 @@ border-radius:10px;text-decoration:none}
 
 </div>
 </div>
+</div>
+</div>
 
 <script>
 const GAS_URL="https://script.google.com/macros/s/AKfycbyjYOjeXz2sJame1uf5sEjutY04B1RghTek5WmTbKb0qso_uJcLNjWoucbify9CvJ8m/exec";
 let globalData=null;
 
-function formatTanggal(val){
-if(!val) return val;
-if(typeof val!=="string") return val;
-if(val.includes("T")){
-const d=new Date(val);
-if(!isNaN(d)) return d.toLocaleDateString("id-ID");
-}
-return val;
-}
-
 function mapJudul(sheet, detail){
-const s=sheet.replace("data_","").toLowerCase();
+const s = sheet.replace("data_","").toLowerCase();
 if(s==="pangkat") return "Pengajuan Pangkat";
 if(s==="kgb") return "Pengajuan Gaji Berkala";
 if(s==="cuti") return "Pengajuan Cuti";
@@ -183,7 +220,7 @@ if(s==="jafung") return "Pengajuan Jabatan Fungsional";
 if(s==="sib_sip") return "Pengajuan SIP / SIB";
 if(s==="slks") return "Pengajuan SLKS";
 if(s==="arsip"){
-let jenis=detail["jenis-arsip"]||detail["JENIS-ARSIP"]||detail["jenis_arsip"]||detail["JENIS_ARSIP"]||"";
+let jenis = detail["jenis-arsip"]||detail["JENIS-ARSIP"]||detail["jenis_arsip"]||detail["JENIS_ARSIP"]||"";
 if(jenis.includes(":")) jenis=jenis.split(":")[1];
 jenis=jenis.trim();
 return jenis ? "Arsip "+jenis : "Arsip";
@@ -192,6 +229,9 @@ return sheet;
 }
 
 window.onload=()=>{
+if(window.innerWidth>=1024){
+document.getElementById("sidebarMenu").style.display="block";
+}
 const session=localStorage.getItem("rsds_session");
 if(session) fetchData(session);
 };
@@ -225,9 +265,29 @@ renderLayanan();
 renderProfil();
 }
 
+function renderPesan(){
+if(!globalData.pesan || !globalData.pesan.length) return;
+let html=`<div class="message-header" onclick="toggleMsg()">
+<div>Pesan dari Bagian Kepegawaian</div>
+<div>${globalData.pesan.length}</div>
+</div>
+<div class="message-box" id="msgBox">`;
+globalData.pesan.forEach(m=>{
+html+=`<div class="message-card">${m.text}
+<div style="font-size:11px;color:#6b7280">${m.time}</div></div>`;
+});
+html+="</div>";
+document.getElementById("messageContainer").innerHTML=html;
+}
+
+function toggleMsg(){
+const b=document.getElementById("msgBox");
+b.style.display=b.style.display==="block"?"none":"block";
+}
+
 function renderRiwayat(){
 let h="<div style='margin-bottom:8px;font-size:13px;color:#6b7280'>Pantau Pengajuan Layanan Secara Berkala</div>";
-if(!globalData.riwayat.length){
+if(!globalData.riwayat || !globalData.riwayat.length){
 h+="<div style='text-align:center;color:#9ca3af'>Belum ada aktivitas</div>";
 }else{
 globalData.riwayat.forEach(x=>{
@@ -238,7 +298,7 @@ if(k==="TIMESTAMP") return;
 if(String(v).startsWith("http")){
 h+=`<a href="${v}" target="_blank" class="folder-link">📂 Buka Folder</a>`;
 }else{
-h+=`<div>${k}: ${formatTanggal(v)}</div>`;
+h+=`<div>${k}: ${v}</div>`;
 }
 });
 h+="</div>";
@@ -250,29 +310,25 @@ document.getElementById("riwayatSlide").innerHTML=h;
 function renderLayanan(){
 document.getElementById("layananSlide").innerHTML=`
 <div class="grid">
-<div class="menu" onclick="window.open('https://rikoantah.github.io/pangkat-rsds-aktive/','_blank')"><span>👤</span>Pangkat</div>
-<div class="menu" onclick="window.open('https://rikoantah.github.io/Gaji-Berkala-RSDS-Soedarso/','_blank')"><span>💰</span>Gaji Berkala</div>
-<div class="menu" onclick="window.open('https://rikoantah.github.io/Ukom-Rsds/','_blank')"><span>📝</span>UKOM</div>
-<div class="menu" onclick="window.open('https://rikoantah.github.io/Jafung-D/','_blank')"><span>💼</span>Jabatan Fungsional</div>
-<div class="menu" onclick="window.open('https://rikoantahsaputra94-jpg.github.io/Tampilan-Cuti-Umpar/','_blank')"><span>📅</span>Cuti</div>
-<div class="menu" onclick="window.open('https://script.google.com/macros/s/AKfycbwAwouQ9BK6S9GzQeFtkUxKQJY_iunIfS35Jfe0wYD8L7A6-C5InI7IkFW4eSOnEKQz/exec','_blank')"><span>🧮</span>Angka Kredit</div>
-<div class="menu" onclick="window.open('https://rikoantah.github.io/sip-sib/','_blank')"><span>🪪</span>SIP / SIB</div>
-<div class="menu" onclick="window.open('https://rikoantah.github.io/slks-d/','_blank')"><span>⭐</span>SLKS</div>
+<div class="menu" onclick="openUrl('https://rikoantah.github.io/pangkat-rsds-aktive/')"><span>👤</span>Pangkat</div>
+<div class="menu" onclick="openUrl('https://rikoantah.github.io/Gaji-Berkala-RSDS-Soedarso/')"><span>💰</span>Gaji Berkala</div>
+<div class="menu" onclick="openUrl('https://rikoantah.github.io/Ukom-Rsds/')"><span>📝</span>UKOM</div>
+<div class="menu" onclick="openUrl('https://rikoantah.github.io/Jafung-D/')"><span>💼</span>Jabatan Fungsional</div>
+<div class="menu" onclick="openUrl('https://rikoantahsaputra94-jpg.github.io/Tampilan-Cuti-Umpar/')"><span>📅</span>Cuti</div>
+<div class="menu" onclick="openUrl('https://script.google.com/macros/s/AKfycbwAwouQ9BK6S9GzQeFtkUxKQJY_iunIfS35Jfe0wYD8L7A6-C5InI7IkFW4eSOnEKQz/exec')"><span>🧮</span>Angka Kredit</div>
+<div class="menu" onclick="openUrl('https://rikoantah.github.io/sip-sib/')"><span>🪪</span>SIP / SIB</div>
+<div class="menu" onclick="openUrl('https://rikoantah.github.io/slks-d/')"><span>⭐</span>SLKS</div>
 </div>`;
 }
 
 function renderProfil(){
 let p=globalData.profile;
 let h=`<div class="profil-card">`;
-h+=`<div class="identitas-title">IDENTITAS</div>`;
-h+=`<div><b>NAMA</b><br>${p.NAMA||p.nama||""}</div><br>`;
-if(p.NIP||p.nip||p["nip/nik"]){
-h+=`<div><b>NIP/NIK</b><br>${p.NIP||p.nip||p["nip/nik"]}</div><br>`;
-}
+h+=`<div><b>NAMA</b><br>${p.NAMA||p.nama||"-"}</div><br>`;
+h+=`<div><b>NIP</b><br>${p.NIP||p.nip||"-"}</div><br>`;
 Object.entries(p).forEach(([k,v])=>{
-let keyLower=k.toLowerCase();
-if(keyLower==="nama"||keyLower==="nip") return;
-h+=`<div><b>${k.toUpperCase()}</b><br>${v||"-"}</div><br>`;
+if(k.toLowerCase()==="nama"||k.toLowerCase()==="nip") return;
+h+=`<div><b>${k}</b><br>${v||"-"}</div><br>`;
 });
 h+=`<div style="color:#b91c1c;font-size:12px">
 Jika ada data belum update silahkan kirimkan perubahan data.
@@ -288,18 +344,20 @@ slider.scrollTo({left:i*slider.clientWidth,behavior:"smooth"});
 document.querySelectorAll(".tab").forEach((t,idx)=>{
 t.classList.toggle("active",idx===i);
 });
+document.querySelectorAll(".sidebar-item").forEach((t,idx)=>{
+t.classList.toggle("active",idx===i);
+});
 }
 
+function openUrl(url){window.open(url,"_blank");}
 function toggleDropdown(){
 const d=document.getElementById("dropdown");
 d.style.display=d.style.display==="block"?"none":"block";
 }
-
 function logout(){
 localStorage.removeItem("rsds_session");
 location.reload();
 }
 </script>
-
 </body>
 </html>
