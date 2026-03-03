@@ -7,201 +7,63 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI}
-body{
-background:linear-gradient(135deg,#eef2ff,#f8fafc);
-color:#1f2937;
-}
+body{background:#f4f6f9;color:#1f2937}
 
 /* WRAPPER */
-.wrapper{
-max-width:1200px;
-margin:auto;
-padding:20px;
-position:relative;
-}
+.wrapper{max-width:1200px;margin:auto;padding:15px;position:relative}
 
 /* LOGIN */
 .login-card{
-max-width:430px;
-margin:60px auto;
-background:#1e3a8a;
-color:#fff;
-padding:40px;
-border-radius:22px;
-box-shadow:0 20px 40px rgba(0,0,0,.15);
-text-align:center;
-transition:.3s;
-}
-
-.login-card h2{
-margin-bottom:10px;
-font-weight:600;
-letter-spacing:.5px;
-}
-
+max-width:430px;margin:auto;
+background:#1e3a8a;color:#fff;padding:35px;border-radius:20px;
+box-shadow:0 10px 25px rgba(0,0,0,.2);text-align:center}
 .login-card input{
-width:100%;
-padding:14px;
-border-radius:12px;
-border:none;
-margin:18px 0;
-font-size:14px;
-}
-
-.login-card input:focus{
-outline:none;
-box-shadow:0 0 0 2px rgba(255,255,255,.5);
-}
-
+width:100%;padding:14px;border-radius:10px;
+border:none;margin:15px 0}
 .login-card button{
-width:100%;
-padding:14px;
-border:none;
-border-radius:12px;
-background:#2563eb;
-color:#fff;
-font-weight:600;
-cursor:pointer;
-transition:.2s;
-}
-
-.login-card button:hover{
-background:#1d4ed8;
-}
-
-.loading{
-display:none;
-margin-top:12px;
-font-size:13px;
-opacity:.85;
-}
+width:100%;padding:14px;border:none;
+border-radius:10px;background:#2563eb;
+color:#fff;font-weight:600}
+.loading{display:none;margin-top:10px;font-size:13px}
 
 /* DASHBOARD LAYOUT */
 .dashboard-layout{display:block}
 
 /* HEADER */
-.header{
-margin-bottom:18px;
-padding:18px;
-background:#fff;
-border-radius:16px;
-border:1px solid #e5e7eb;
-box-shadow:0 6px 18px rgba(0,0,0,.05);
-}
-
-.welcome{
-font-size:20px;
-font-weight:700;
-color:#1e3a8a;
-}
-
-.nama-user{
-font-size:14px;
-margin-top:4px;
-color:#6b7280;
-}
+.header{text-align:center;margin-bottom:15px}
+.welcome{font-size:22px;font-weight:700;}
+.nama-user{font-size:16px;margin-top:4px;color:#374151}
 
 /* DROPDOWN */
-.top-menu{
-position:absolute;
-top:20px;
-right:20px;
-z-index:50;
-}
-
+.top-menu{position:absolute;top:15px;right:15px;z-index:50;}
 .menu-btn{
-width:36px;
-height:36px;
-border-radius:50%;
-background:#fff;
-display:flex;
-align-items:center;
-justify-content:center;
-box-shadow:0 6px 15px rgba(0,0,0,.15);
-cursor:pointer;
-font-weight:bold;
-transition:.2s;
-}
-
-.menu-btn:hover{
-transform:rotate(90deg);
-}
-
+width:34px;height:34px;border-radius:50%;background:#fff;
+display:flex;align-items:center;justify-content:center;
+box-shadow:0 4px 10px rgba(0,0,0,.15);cursor:pointer;font-weight:bold;}
 .dropdown{
-display:none;
-position:absolute;
-right:0;
-margin-top:8px;
-background:#fff;
-border-radius:12px;
-box-shadow:0 10px 25px rgba(0,0,0,.15);
-overflow:hidden;
-}
-
-.dropdown div{
-padding:12px 16px;
-font-size:13px;
-cursor:pointer;
-transition:.2s;
-}
-
-.dropdown div:hover{
-background:#f3f4f6;
-}
+display:none;position:absolute;right:0;margin-top:6px;
+background:#fff;border-radius:10px;
+box-shadow:0 6px 15px rgba(0,0,0,.15);overflow:hidden;}
+.dropdown div{padding:10px 14px;font-size:13px;cursor:pointer;}
+.dropdown div:hover{background:#f3f4f6;}
 
 /* MESSAGE */
 .message-header{
-background:#1e3a8a;
-color:#fff;
-padding:12px 14px;
-border-radius:14px;
-display:flex;
-justify-content:space-between;
-cursor:pointer;
-margin-bottom:12px;
-font-size:13px;
-}
-
+background:#1e3a8a;color:#fff;padding:12px;border-radius:12px;
+display:flex;justify-content:space-between;
+cursor:pointer;margin-bottom:10px}
 .message-box{
-display:none;
-background:#fff;
-border-radius:14px;
-padding:12px;
-max-height:220px;
-overflow-y:auto;
-border:1px solid #e5e7eb;
-margin-bottom:15px;
-}
-
-.message-card{
-padding:10px 0;
-border-bottom:1px solid #f1f1f1;
-font-size:13px;
-}
+display:none;background:#fff;border-radius:12px;
+padding:10px;max-height:200px;overflow-y:auto;
+border:1px solid #e5e7eb}
+.message-card{padding:8px 0;border-bottom:1px solid #eee;font-size:13px}
 
 /* TABS (HP) */
-.tabs{
-display:flex;
-margin-bottom:12px;
-border-radius:12px;
-overflow:hidden;
-background:#e5e7eb;
-}
-
+.tabs{display:flex;margin-bottom:10px}
 .tab{
-flex:1;
-text-align:center;
-padding:12px;
-cursor:pointer;
-font-size:14px;
-transition:.2s;
-}
-
-.tab.active{
-background:#1e3a8a;
-color:#fff;
-font-weight:600;
-}
+flex:1;text-align:center;padding:10px;
+background:#e5e7eb;cursor:pointer;font-size:14px}
+.tab.active{background:#1e3a8a;color:#fff}
 
 /* SLIDER */
 .slider{
@@ -210,7 +72,6 @@ overflow-x:auto;
 scroll-snap-type:x mandatory;
 scroll-behavior:smooth;
 }
-
 .slide{
 min-width:100%;
 scroll-snap-align:start;
@@ -219,84 +80,31 @@ flex-shrink:0;
 
 /* CARD */
 .riwayat-card{
-background:#fff;
-border-radius:16px;
-padding:16px;
-margin-bottom:12px;
-border:1px solid #e5e7eb;
-font-size:13px;
-box-shadow:0 4px 12px rgba(0,0,0,.05);
-transition:.2s;
-}
-
-.riwayat-card:hover{
-transform:translateY(-2px);
-}
-
+background:#fff;border-radius:14px;
+padding:14px;margin-bottom:10px;
+border:1px solid #e5e7eb;font-size:13px}
 .folder-link{
-display:inline-block;
-margin-top:8px;
-color:#2563eb;
-text-decoration:none;
-font-weight:600;
-}
+display:inline-block;margin-top:6px;
+color:#2563eb;text-decoration:none;font-weight:600}
 
 /* GRID */
-.grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:15px;
-}
-
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
 .menu{
-background:#fff;
-border-radius:16px;
-padding:22px;
-text-align:center;
-border:1px solid #e5e7eb;
-cursor:pointer;
-transition:.2s;
-box-shadow:0 4px 12px rgba(0,0,0,.05);
-}
-
-.menu:hover{
-transform:translateY(-3px);
-box-shadow:0 8px 20px rgba(0,0,0,.1);
-}
-
-.menu span{
-font-size:28px;
-display:block;
-margin-bottom:8px;
-}
+background:#fff;border-radius:14px;padding:18px;
+text-align:center;border:1px solid #e5e7eb;
+cursor:pointer;transition:.15s}
+.menu:hover{box-shadow:0 6px 18px rgba(0,0,0,.1)}
+.menu span{font-size:26px;display:block;margin-bottom:6px}
 
 /* PROFIL */
 .profil-card{
-background:#fff;
-border-radius:18px;
-padding:20px;
-border:1px solid #e5e7eb;
-font-size:13px;
-line-height:1.6;
-box-shadow:0 4px 12px rgba(0,0,0,.05);
-}
-
+background:#fff;border-radius:16px;
+padding:16px;border:1px solid #e5e7eb;
+font-size:13px;line-height:1.6}
 .update-btn{
-display:block;
-margin-top:14px;
-padding:12px;
-background:#1e3a8a;
-color:#fff;
-text-align:center;
-border-radius:12px;
-text-decoration:none;
-font-weight:600;
-transition:.2s;
-}
-
-.update-btn:hover{
-background:#1d4ed8;
-}
+display:block;margin-top:12px;padding:10px;
+background:#1e3a8a;color:#fff;text-align:center;
+border-radius:10px;text-decoration:none}
 
 /* DESKTOP MODE */
 @media (min-width:1024px){
@@ -309,28 +117,26 @@ gap:25px;
 
 .sidebar{
 background:#fff;
-border-radius:18px;
+border-radius:16px;
 padding:20px;
 height:fit-content;
 border:1px solid #e5e7eb;
-box-shadow:0 6px 18px rgba(0,0,0,.05);
 }
 
 .sidebar h3{
-font-size:13px;
-margin-bottom:18px;
+font-size:14px;
+margin-bottom:15px;
 color:#6b7280;
 text-transform:uppercase;
 letter-spacing:1px;
 }
 
 .sidebar-item{
-padding:12px;
-border-radius:12px;
+padding:10px;
+border-radius:10px;
 cursor:pointer;
-margin-bottom:10px;
+margin-bottom:8px;
 font-size:14px;
-transition:.2s;
 }
 
 .sidebar-item.active,
@@ -341,6 +147,7 @@ color:#fff;
 
 .tabs{display:none;}
 .slider{overflow:hidden;}
+.header{text-align:left;}
 }
 </style>
 </head>
@@ -479,96 +286,32 @@ b.style.display=b.style.display==="block"?"none":"block";
 }
 
 function renderRiwayat(){
+let h="<div style='margin-bottom:8px;font-size:13px;color:#6b7280'>Pantau Pengajuan Layanan Secara Berkala</div>";
 
-let data = globalData.riwayat || [];
+if(!globalData.riwayat || !globalData.riwayat.length){
+h+="<div style='text-align:center;color:#9ca3af'>Belum ada aktivitas</div>";
+}else{
 
-if(!data.length){
-document.getElementById("riwayatSlide").innerHTML=
-"<div style='text-align:center;color:#9ca3af;padding:30px'>Belum ada aktivitas</div>";
-return;
-}
-
-// SORT TERBARU
-data.sort((a,b)=>{
-let ta = new Date(a.detail.TIMESTAMP || 0);
-let tb = new Date(b.detail.TIMESTAMP || 0);
-return tb - ta;
-});
-
-// HITUNG SUMMARY
-let total=data.length;
-let proses=0, selesai=0, tolak=0;
-
-data.forEach(x=>{
-let status=(x.detail.STATUS||x.detail.status||"").toLowerCase();
-if(status.includes("selesai")) selesai++;
-else if(status.includes("tolak")) tolak++;
-else proses++;
-});
-
-// HEADER + SUMMARY
-let h=`
-<div class="riwayat-header">
-<div>
-<h3>Riwayat Pengajuan Layanan</h3>
-<small>Data tersusun otomatis berdasarkan aktivitas terbaru</small>
-</div>
-<div style="font-size:18px;font-weight:700">${total}</div>
-</div>
-
-<div class="summary-box">
-<div class="summary-card">
-<b>${total}</b>
-<span>Total</span>
-</div>
-<div class="summary-card">
-<b>${proses}</b>
-<span>Diproses</span>
-</div>
-<div class="summary-card">
-<b>${selesai}</b>
-<span>Selesai</span>
-</div>
-<div class="summary-card">
-<b>${tolak}</b>
-<span>Ditolak</span>
-</div>
-</div>
-
-<div class="timeline">
-`;
-
-// LOOP DATA
-data.forEach(x=>{
-
-let judul = mapJudul(x.sheet,x.detail);
-let status=(x.detail.STATUS||x.detail.status||"");
-let badgeClass="proses";
-
-if(status.toLowerCase().includes("selesai")) badgeClass="selesai";
-if(status.toLowerCase().includes("tolak")) badgeClass="tolak";
+globalData.riwayat.forEach(x=>{
+let judul=mapJudul(x.sheet,x.detail);
 
 h+=`<div class="riwayat-card"><b>${judul}</b><br>`;
 
-// DETAIL
 Object.entries(x.detail).forEach(([k,v])=>{
 
 if(k==="TIMESTAMP") return;
-
-if(k.toLowerCase()==="status"){
-h+=`<div style="margin-top:6px">
-<span class="badge ${badgeClass}">${v}</span>
-</div>`;
-return;
-}
 
 if(String(v).startsWith("http")){
 h+=`<a href="${v}" target="_blank" class="folder-link">📂 Buka Folder</a>`;
 }else{
 
-if(typeof v==="string" && v.includes("T") && v.includes("Z")){
-let d=new Date(v);
-let tanggal=d.toLocaleDateString("id-ID");
+// 🔹 Deteksi jika value adalah tanggal ISO (UTC)
+if(typeof v === "string" && v.includes("T") && v.includes("Z")){
+let d = new Date(v);
+
+// Format ke tanggal Indonesia
+let tanggal = d.toLocaleDateString("id-ID");
+
 h+=`<div>${k}: ${tanggal}</div>`;
 }else{
 h+=`<div>${k}: ${v}</div>`;
@@ -578,14 +321,12 @@ h+=`<div>${k}: ${v}</div>`;
 
 });
 
-h+=`</div>`;
+h+="</div>";
 
 });
 
-// TUTUP TIMELINE
-h+=`</div>`;
+}
 
-// RENDER
 document.getElementById("riwayatSlide").innerHTML=h;
 }
 function renderLayanan(){
