@@ -336,30 +336,34 @@ b.style.display=b.style.display==="block"?"none":"block";
 }
 
 function renderRiwayat(){
+
 let h="<div style='margin-bottom:8px;font-size:13px;color:#6b7280'>Pantau Pengajuan Layanan Secara Berkala</div>";
 
 if(!globalData.riwayat || !globalData.riwayat.length){
+
 h+="<div style='text-align:center;color:#9ca3af'>Belum ada aktivitas</div>";
+
 }else{
 
 globalData.riwayat.forEach((x,index)=>{
-let judul=mapJudul(x.sheet,x.detail);
+
+let judul = mapJudul(x.sheet,x.detail);
 
 // ambil tanggal dari TIMESTAMP jika ada
-let tanggal="";
+let tanggal = "";
 if(x.detail.TIMESTAMP){
-let d=new Date(x.detail.TIMESTAMP);
-tanggal=d.toLocaleDateString("id-ID");
+let d = new Date(x.detail.TIMESTAMP);
+tanggal = d.toLocaleDateString("id-ID");
 }
 
-// tombol download jika arsip
+// ====== DOWNLOAD BUTTON UNTUK ARSIP ======
 let downloadBtn = "";
 
 if(judul.toLowerCase().includes("arsip")){
 
 let fileUrl = "";
 
-// cari link file (bukan folder)
+// cari link file drive (bukan folder)
 Object.values(x.detail).forEach(val=>{
 if(String(val).includes("drive.google.com/file")){
 fileUrl = val;
@@ -374,7 +378,7 @@ if(fileId){
 let downloadUrl = "https://drive.google.com/uc?export=download&id=" + fileId;
 
 downloadBtn = `
-<a href="${downloadUrl}" 
+<a href="${downloadUrl}"
 class="badge"
 onclick="event.stopPropagation()"
 style="text-decoration:none;cursor:pointer;">
@@ -384,7 +388,9 @@ style="text-decoration:none;cursor:pointer;">
 }
 
 }
+// ==========================================
 
+// HEADER CARD
 h+=`
 <div class="riwayat-card">
   <div class="riwayat-header" onclick="toggleDetail(${index})">
@@ -396,6 +402,7 @@ h+=`
   <div class="riwayat-detail" id="detail-${index}">
 `;
 
+// DETAIL LOOP
 Object.entries(x.detail).forEach(([k,v])=>{
 
 // sembunyikan nama & nip
@@ -403,7 +410,8 @@ if(k.toLowerCase()==="nama" || k.toLowerCase()==="nip" || k==="TIMESTAMP") retur
 
 if(String(v).startsWith("http")){
 
-h+=`<div style="margin-top:8px">
+h+=`
+<div style="margin-top:8px">
 <a href="${v}" target="_blank" class="folder-link" onclick="event.stopPropagation()">
 📂 Buka Folder
 </a>
@@ -423,6 +431,14 @@ h+=`<div><b>${k}</b>: ${v}</div>`;
 });
 
 h+="</div></div>";
+
+}); // tutup forEach
+
+} // tutup else
+
+document.getElementById("riwayatSlide").innerHTML = h;
+
+} // tutup function
 function renderLayanan(){
 document.getElementById("layananSlide").innerHTML=`
 <div class="grid">
@@ -489,7 +505,6 @@ el.style.display="none";
 el.style.display="block";
 }
 }
-</script>
 </script>
 </body>
 </html>
