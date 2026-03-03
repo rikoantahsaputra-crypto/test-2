@@ -429,19 +429,34 @@ h+=`
 Object.entries(x.detail).forEach(([k,v])=>{
 
 // sembunyikan nama & nip
-if(k.toLowerCase()==="nama" || k.toLowerCase()==="nip" || k==="TIMESTAMP") return;
-  if(k.toLowerCase()==="status"){
+// sembunyikan nama & nip
+let fieldName = k.toLowerCase();
+
+if(
+fieldName==="nama" ||
+fieldName==="nip" ||
+k==="TIMESTAMP"
+) return;
+
+
+// ===== STATUS / CATATAN / KETERANGAN =====
+let statusFields = ["status","catatan","keterangan"];
+
+if(statusFields.includes(fieldName)){
 
 let parts = v.split(",");
-let statusUtama = parts[0].trim().toLowerCase();
+let statusUtama = parts[0]
+.trim()
+.toLowerCase()
+.replace(/\./g,""); // hilangkan titik kalau ada
 
 let statusClass = "";
 
-if(statusUtama==="kurang"){
+if(statusUtama.includes("kurang")){
 statusClass="status-kurang";
-}else if(statusUtama==="proses"){
+}else if(statusUtama.includes("proses")){
 statusClass="status-proses";
-}else if(statusUtama==="selesai"){
+}else if(statusUtama.includes("selesai")){
 statusClass="status-selesai";
 }
 
@@ -449,7 +464,7 @@ h+=`<div class="status-badge ${statusClass}">
 ${parts[0].trim()}
 </div>`;
 
-if(statusUtama==="kurang" && parts.length>1){
+if(statusUtama.includes("kurang") && parts.length>1){
 
 h+=`<div style="margin-top:6px;"><b>Lengkapi:</b></div>`;
 
@@ -462,12 +477,14 @@ h+=`<div>${i+1}. ${item.trim()}</div>`;
 return;
 }
 
+
+// ===== LINK FOLDER =====
 if(String(v).startsWith("http")){
 
 h+=`
 <div style="margin-top:8px">
 <a href="${v}" target="_blank" class="folder-link" onclick="event.stopPropagation()">
-📂 Buka Folder
+📂 Kelola Berkas
 </a>
 </div>`;
 
