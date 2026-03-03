@@ -149,6 +149,56 @@ color:#fff;
 .slider{overflow:hidden;}
 .header{text-align:left;}
 }
+  /* ACCORDION RIWAYAT */
+.riwayat-card{
+background:#fff;
+border-radius:14px;
+margin-bottom:10px;
+border:1px solid #e5e7eb;
+overflow:hidden;
+transition:.2s;
+}
+
+.riwayat-header{
+padding:14px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+cursor:pointer;
+}
+
+.riwayat-header:hover{
+background:#f9fafb;
+}
+
+.riwayat-title{
+font-weight:600;
+font-size:14px;
+}
+
+.riwayat-date{
+font-size:12px;
+color:#6b7280;
+}
+
+.riwayat-detail{
+display:none;
+padding:12px 14px;
+border-top:1px solid #e5e7eb;
+font-size:13px;
+line-height:1.5;
+}
+
+.badge{
+display:inline-block;
+padding:3px 8px;
+border-radius:20px;
+font-size:11px;
+font-weight:600;
+margin-right:6px;
+background:#e0f2fe;
+color:#0369a1;
+}
 </style>
 </head>
 
@@ -292,36 +342,54 @@ if(!globalData.riwayat || !globalData.riwayat.length){
 h+="<div style='text-align:center;color:#9ca3af'>Belum ada aktivitas</div>";
 }else{
 
-globalData.riwayat.forEach(x=>{
+globalData.riwayat.forEach((x,index)=>{
 let judul=mapJudul(x.sheet,x.detail);
 
-h+=`<div class="riwayat-card"><b>${judul}</b><br>`;
+// ambil tanggal dari TIMESTAMP jika ada
+let tanggal="";
+if(x.detail.TIMESTAMP){
+let d=new Date(x.detail.TIMESTAMP);
+tanggal=d.toLocaleDateString("id-ID");
+}
+
+// badge otomatis jika arsip
+let badge = judul.toLowerCase().includes("arsip") ? 
+"<span class='badge'>ARSIP</span>" : "";
+
+h+=`
+<div class="riwayat-card">
+  <div class="riwayat-header" onclick="toggleDetail(${index})">
+    <div class="riwayat-title">
+      ${badge}${judul}
+    </div>
+    <div class="riwayat-date">${tanggal}</div>
+  </div>
+  <div class="riwayat-detail" id="detail-${index}">
+`;
 
 Object.entries(x.detail).forEach(([k,v])=>{
 
-if(k==="TIMESTAMP") return;
+// sembunyikan nama & nip
+if(k.toLowerCase()==="nama" || k.toLowerCase()==="nip" || k==="TIMESTAMP") return;
 
 if(String(v).startsWith("http")){
-h+=`<a href="${v}" target="_blank" class="folder-link">📂 Buka Folder</a>`;
+h+=`<div style="margin-top:8px">
+<a href="${v}" target="_blank" class="folder-link">📂 Buka Folder</a>
+</div>`;
 }else{
 
-// 🔹 Deteksi jika value adalah tanggal ISO (UTC)
+// format tanggal ISO
 if(typeof v === "string" && v.includes("T") && v.includes("Z")){
 let d = new Date(v);
-
-// Format ke tanggal Indonesia
-let tanggal = d.toLocaleDateString("id-ID");
-
-h+=`<div>${k}: ${tanggal}</div>`;
-}else{
-h+=`<div>${k}: ${v}</div>`;
+v = d.toLocaleDateString("id-ID");
 }
 
+h+=`<div><b>${k}</b>: ${v}</div>`;
 }
 
 });
 
-h+="</div>";
+h+="</div></div>";
 
 });
 
@@ -380,6 +448,32 @@ function logout(){
 localStorage.removeItem("rsds_session");
 location.reload();
 }
+  <script>
+
+... SEMUA FUNCTION ANDA DI ATAS ...
+
+function logout(){
+localStorage.removeItem("rsds_session");
+location.reload();
+}
+
+/* 🔽 LETAKKAN DI SINI */
+function toggleDetail(index){
+
+document.querySelectorAll(".riwayat-detail").forEach(d=>{
+d.style.display="none";
+});
+
+const el=document.getElementById("detail-"+index);
+
+if(el.style.display==="block"){
+el.style.display="none";
+}else{
+el.style.display="block";
+}
+}
+
+</script>
 </script>
 </body>
 </html>
