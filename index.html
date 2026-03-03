@@ -386,6 +386,7 @@ globalData.riwayat.forEach((x,index)=>{
 
 let judul = mapJudul(x.sheet,x.detail);
 
+// ===== FORMAT TANGGAL HEADER =====
 let tanggal="";
 if(x.detail.TIMESTAMP){
 let d=new Date(x.detail.TIMESTAMP);
@@ -401,6 +402,7 @@ Object.entries(x.detail).forEach(([k,v])=>{
 
 let fieldName = k.toLowerCase();
 
+// ===== STATUS WARNA CARD =====
 if(fieldName==="status" || fieldName==="catatan" || fieldName==="keterangan"){
 
 let statusUtama = v.split(",")[0].trim().toLowerCase();
@@ -412,10 +414,13 @@ cardClass="card-proses";
 }else if(statusUtama.includes("selesai")){
 cardClass="card-selesai";
 }
-
 }
 
-if(String(v).startsWith("http")){
+// ===== LINK FOLDER (HANYA UNTUK PENGAJUAN) =====
+if(
+String(v).startsWith("http") &&
+!judul.toLowerCase().includes("arsip")
+){
 folderLink = `
 <a href="${v}" 
 target="_blank" 
@@ -427,7 +432,7 @@ onclick="event.stopPropagation()">
 
 });
 
-// ===== DOWNLOAD UNTUK ARSIP =====
+// ===== DOWNLOAD UNTUK ARSIP SAJA =====
 if(judul.toLowerCase().includes("arsip")){
 
 Object.values(x.detail).forEach(val=>{
@@ -451,7 +456,7 @@ style="text-decoration:none;cursor:pointer;">
 
 }
 
-// ===== HEADER =====
+// ===== HEADER CARD =====
 h+=`
 <div class="riwayat-card ${cardClass}">
   <div class="riwayat-header" onclick="toggleDetail(${index})">
@@ -473,6 +478,7 @@ let fieldName = k.toLowerCase();
 
 if(fieldName==="nama" || fieldName==="nip" || k==="TIMESTAMP") return;
 
+// ===== STATUS BADGE =====
 if(fieldName==="status" || fieldName==="catatan" || fieldName==="keterangan"){
 
 let parts = v.split(",");
@@ -493,7 +499,13 @@ h+=`<div>${i+1}. ${item.trim()}</div>`;
 return;
 }
 
+// ===== FORMAT TANGGAL ISO DI DETAIL =====
 if(!String(v).startsWith("http")){
+
+if(typeof v === "string" && v.includes("T") && v.includes("Z")){
+let d = new Date(v);
+v = d.toLocaleDateString("id-ID");
+}
 
 h+=`<div><b>${k}</b>: ${v}</div>`;
 }
