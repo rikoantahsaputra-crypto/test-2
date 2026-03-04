@@ -331,18 +331,59 @@ fetchData(nip);
 }
 
 function fetchData(nip){
+
 document.getElementById("loading").style.display="block";
-fetch(GAS_URL,{method:"POST",body:JSON.stringify({nip})})
+
+fetch(GAS_URL,{
+method:"POST",
+body:JSON.stringify({nip})
+})
+
 .then(r=>r.json())
+
 .then(r=>{
-if(!r.status){alert(r.message);logout();return;}
-globalData=r.data;
+
+if(!r.status){
+alert(r.message);
+logout();
+return;
+}
+
+globalData = r.data;
+
+/* ===============================
+   SIMPAN PROFILE UNTUK LAYANAN
+================================ */
+if(globalData.profile){
+localStorage.setItem(
+"rsds_profile",
+JSON.stringify(globalData.profile)
+);
+}
+
+/* ===============================
+   TAMPILKAN DASHBOARD
+================================ */
+
 document.getElementById("loginBox").style.display="none";
 document.getElementById("dashboard").style.display="block";
-document.getElementById("namaUser").innerText=
-"Sdr/i "+(globalData.profile.NAMA||globalData.profile.nama||"");
+
+document.getElementById("namaUser").innerText =
+"Sdr/i " + (globalData.profile.NAMA || globalData.profile.nama || "");
+
+/* ===============================
+   RENDER DATA
+================================ */
+
 renderAll();
+
+})
+
+.catch(err=>{
+console.error(err);
+alert("Terjadi kesalahan koneksi");
 });
+
 }
 
 function renderAll(){
